@@ -12,19 +12,23 @@ import {
 import AuthModal from "./AuthModal";
 import { refreshSession, setAccessToken, type AuthResponse, type User } from "@/lib/api";
 import { authApi, type RegisterPayload } from "@/lib/authApi";
+import { usersApi } from "@/lib/users";
 
 export type AuthMode = "login" | "signup";
 export type AuthStatus = "loading" | "authenticated" | "guest";
 
+// The auth response carries no avatarUrl, so it's filled in from /users/me.
+export type SessionUser = User & { avatarUrl: string | null };
+
 type AuthContextValue = {
-  user: User | null;
+  user: SessionUser | null;
   status: AuthStatus;
   openAuth: (mode: AuthMode) => void;
   closeAuth: () => void;
   login: (email: string, password: string) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
-  updateUser: (patch: Partial<User>) => void;
+  updateUser: (patch: Partial<SessionUser>) => void;
   setSession: (r: AuthResponse) => void;
 };
 
@@ -38,13 +42,22 @@ export function useAuth() {
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<AuthMode | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [status, setStatus] = useState<AuthStatus>("loading");
 
   const applySession = useCallback((r: AuthResponse) => {
     setAccessToken(r.accessToken);
-    setUser(r.user);
+    setUser({ ...r.user, avatarUrl: null });
     setStatus("authenticated");
+
+    // Fetch the avatar URL the auth response doesn't include. Ignore failures:
+    // the navbar just falls back to initials.
+    usersApi
+      .getMe()
+      .then((me) =>
+        setUser((u) => (u && u.id === me.id ? { ...u, avatarUrl: me.avatarUrl } : u))
+      )
+      .catch(() => {});
   }, []);
 
   // Restore the session from the refresh cookie. Guests just end up as "guest".
@@ -89,7 +102,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const updateUser = useCallback(
-    (patch: Partial<User>) => setUser((u) => (u ? { ...u, ...patch } : u)),
+    (patch: Partial<SessionUser>) => setUser((u) => (u ? { ...u, ...patch } : u)),
     []
   );
 

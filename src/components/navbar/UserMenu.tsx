@@ -1,18 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { User } from "@/lib/api";
-import { useAuth } from "../auth/AuthProvider";
 import Link from "next/link";
+import type { SessionUser } from "../auth/AuthProvider";
+import { useAuth } from "../auth/AuthProvider";
+import Avatar from "../ui/Avatar";
 
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-  return (first + last).toUpperCase() || "?";
-}
-
-export default function UserMenu({ user }: { user: User }) {
+export default function UserMenu({ user }: { user: SessionUser }) {
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -33,14 +27,6 @@ export default function UserMenu({ user }: { user: User }) {
     };
   }, [open]);
 
-  const avatar = (size: string, text: string) => (
-    <span
-      className={`flex ${size} items-center justify-center rounded-full bg-linear-to-br from-rose-200 via-fuchsia-200 to-purple-300 ${text} font-semibold text-neutral-800`}
-    >
-      {initials(user.displayName)}
-    </span>
-  );
-
   return (
     <div ref={ref} className="relative flex items-center gap-1">
       {/* Profile: navigation */}
@@ -49,7 +35,12 @@ export default function UserMenu({ user }: { user: User }) {
         aria-label="Go to profile"
         className="rounded-full transition-opacity hover:opacity-80"
       >
-        {avatar("h-11 w-11", "text-[15px]")}
+        <Avatar
+          name={user.displayName}
+          src={user.avatarUrl}
+          className="h-11 w-11"
+          textClassName="text-[15px]"
+        />
       </Link>
 
       {/* Dropdown toggle */}
@@ -83,7 +74,12 @@ export default function UserMenu({ user }: { user: User }) {
           className="absolute right-0 top-full mt-3 w-72 rounded-3xl border border-neutral-200 bg-white p-3 shadow-xl"
         >
           <div className="flex items-center gap-3 px-3 py-3">
-            {avatar("h-12 w-12 shrink-0", "text-[16px]")}
+            <Avatar
+              name={user.displayName}
+              src={user.avatarUrl}
+              className="h-12 w-12 shrink-0"
+              textClassName="text-[16px]"
+            />
             <div className="min-w-0">
               <p className="truncate text-[16px] font-semibold text-neutral-900">
                 {user.displayName}
