@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type SyntheticEvent } from "react";
+import { CropError } from "@/lib/cropImage";
 import { getErrorMessage } from "@/lib/errors";
 import { uploadsApi } from "@/lib/upload";
 import { usersApi } from "@/lib/users";
@@ -9,6 +10,7 @@ import { SolidButton } from "../../ui/Button";
 import ImageDropzone from "../../ui/ImageDropzone";
 import Modal from "../../ui/Modal";
 import StatusText from "../../ui/StatusText";
+import BannerCropper from "./BannerCropper";
 import { useBannerEditor } from "./useBannerEditor";
 
 type Props = {
@@ -25,21 +27,22 @@ export default function BannerModal({ currentUrl, onClose, onChanged }: Props) {
 
   async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!editor.hasChange || busy) return;
+    if (!editor.canSave || busy) return;
 
     setBusy(true);
     setSubmitError(null);
     try {
-      if (editor.file) {
+      if (editor.hasNewImage) {
+        const cropped = await editor.cropFile();
         // The backend attaches the finished BANNER upload to the user
-        await uploadsApi.uploadImage("BANNER", editor.file);
+        await uploadsApi.uploadImage("BANNER", cropped);
       } else {
         await usersApi.removeBanner();
       }
       onChanged();
       onClose();
     } catch (err) {
-      setSubmitError(getErrorMessage(err));
+      setSubmitError(err instanceof CropError ? err.message : getErrorMessage(err));
     } finally {
       setBusy(false);
     }
@@ -61,20 +64,33 @@ export default function BannerModal({ currentUrl, onClose, onChanged }: Props) {
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-8 pb-6 pt-3">
-          <ImageDropzone
-            preview={editor.shown}
-            uploading={busy}
-            busyLabel="Saving…"
-            previewClassName="block aspect-3/1 w-full object-cover"
-            placeholderClassName="h-40"
-            onPick={editor.pick}
-            onClear={editor.clear}
-          />
+          {editor.preview ? (
+            <BannerCropper
+              src={editor.preview}
+              position={editor.position}
+              zoom={editor.zoom}
+              disabled={busy}
+              onPositionChange={editor.setPosition}
+              onZoomChange={editor.setZoom}
+              onAreaChange={editor.setArea}
+              onRemove={editor.clear}
+            />
+          ) : (
+            <ImageDropzone
+              preview={editor.existingUrl}
+              uploading={busy}
+              busyLabel="Saving…"
+              previewClassName="block aspect-4/1 w-full object-cover"
+              placeholderClassName="h-40"
+              onPick={editor.pick}
+              onClear={editor.clear}
+            />
+          )}
         </div>
 
         <div className="flex flex-col gap-3 border-t border-neutral-200 px-8 py-4">
           <StatusText status={error ? { type: "error", text: error } : null} />
-          <SolidButton disabled={!editor.hasChange || busy} className="w-full">
+          <SolidButton disabled={!editor.canSave || busy} className="w-full">
             {busy ? "Saving…" : "Accept"}
           </SolidButton>
         </div>
