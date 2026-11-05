@@ -9,21 +9,13 @@ import { LogoDots } from "../ui/LogoDots";
 import { PasswordField } from "../ui/fields/PasswordField";
 import { TextLink } from "../ui/TextLink";
 import { useAuth } from "./AuthProvider";
-import { ApiError } from "@/lib/api";
 import { authApi } from "@/lib/authApi";
+import { getErrorMessage } from "@/lib/errors";
+import { GENDER_OPTIONS } from "@/lib/gender";
 
 type Step = "email" | "password" | "name" | "age" | "gender" | "username";
 
 const STEPS: Step[] = ["email", "password", "name", "age", "gender", "username"];
-const GENDERS = ["Woman", "Man", "Non-binary", "Prefer not to say"] as const;
-
-// Adjust the right-hand values to match your backend `Gender` enum exactly.
-const GENDER_VALUES: Record<(typeof GENDERS)[number], string> = {
-  Woman: "FEMALE",
-  Man: "MALE",
-  "Non-binary": "NON_BINARY",
-  "Prefer not to say": "PREFER_NOT_TO_SAY",
-};
 
 const MIN_AGE = 13;
 const MAX_AGE = 120;
@@ -48,9 +40,6 @@ const terms = (
     <span className="underline">Privacy Policy</span>
   </p>
 );
-
-const errorMessage = (err: unknown) =>
-  err instanceof ApiError ? err.message : "Can't reach the server. Please try again.";
 
 export default function SignUpFlow({
   onClose,
@@ -106,7 +95,7 @@ export default function SignUpFlow({
       }
       advance();
     } catch (err) {
-      setError(errorMessage(err));
+      setError(getErrorMessage(err));
     } finally {
       setBusy(false);
     }
@@ -131,11 +120,11 @@ export default function SignUpFlow({
         displayName: data.name.trim(),
         username: data.username,
         age: ageNum,
-        gender: GENDER_VALUES[data.gender as (typeof GENDERS)[number]],
+        gender: data.gender,
       });
       onClose();
     } catch (err) {
-      setError(errorMessage(err));
+      setError(getErrorMessage(err));
     } finally {
       setBusy(false);
     }
@@ -150,8 +139,8 @@ export default function SignUpFlow({
     advance();
   }
 
-  function chooseGender(g: string) {
-    set("gender", g);
+  function chooseGender(value: string) {
+    set("gender", value);
     advance();
   }
 
@@ -306,9 +295,9 @@ export default function SignUpFlow({
 
         {step === "gender" ? (
           <div className="grid grid-cols-2 gap-3">
-            {GENDERS.map((g) => (
-              <ChoiceButton key={g} onClick={() => chooseGender(g)}>
-                {g}
+            {GENDER_OPTIONS.map((g) => (
+              <ChoiceButton key={g.value} onClick={() => chooseGender(g.value)}>
+                {g.label}
               </ChoiceButton>
             ))}
           </div>

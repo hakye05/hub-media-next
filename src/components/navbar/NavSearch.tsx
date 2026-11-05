@@ -1,13 +1,5 @@
 import Image from "next/image";
-
-const dots = [
-  "bg-sky-400",
-  "bg-amber-400",
-  "bg-orange-500",
-  "bg-fuchsia-500",
-  "bg-indigo-500",
-  "bg-teal-400",
-];
+import ColorDots from "../ui/ColorDots";
 
 export default function NavSearch() {
   return (
@@ -45,15 +37,7 @@ export default function NavSearch() {
         aria-label="Visual search"
         className="relative h-6 w-6 shrink-0 transition-transform hover:scale-110"
       >
-        {dots.map((color, i) => (
-          <span
-            key={i}
-            className={`absolute left-1/2 top-1/2 h-1 w-1 rounded-full ${color}`}
-            style={{
-              transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateY(-8px)`,
-            }}
-          />
-        ))}
+        <ColorDots dotClassName="h-1 w-1" radius={8} />
       </button>
     </div>
   );
