@@ -21,15 +21,22 @@ export type CreatePostPayload = {
   description?: string;
 };
 
+const pageQuery = (cursor?: string | null, size = 20) => {
+  const params = new URLSearchParams({ size: String(size) });
+  if (cursor) params.set("cursor", cursor);
+  return params.toString();
+};
+
 export const postsApi = {
   create: (payload: CreatePostPayload) =>
     api<Post>("/api/posts", { method: "POST", json: payload }),
 
-  byUsername: (username: string, cursor?: string | null, size = 20) => {
-    const params = new URLSearchParams({ size: String(size) });
-    if (cursor) params.set("cursor", cursor);
-    return api<CursorPage<Post>>(
-      `/api/users/${encodeURIComponent(username)}/posts?${params}`
-    );
-  },
+  // Assumed endpoint: adjust if your feed lives elsewhere
+  feed: (cursor?: string | null, size = 20) =>
+    api<CursorPage<Post>>(`/api/posts?${pageQuery(cursor, size)}`),
+
+  byUsername: (username: string, cursor?: string | null, size = 20) =>
+    api<CursorPage<Post>>(
+      `/api/users/${encodeURIComponent(username)}/posts?${pageQuery(cursor, size)}`
+    ),
 };

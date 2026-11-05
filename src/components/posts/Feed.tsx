@@ -1,9 +1,16 @@
-import PostGrid from "./PostGrid";
+import { postsApi } from "@/lib/posts";
+import PostList from "./PostList";
+
+const fetchFeed = (cursor: string | null) => postsApi.feed(cursor);
 
 export default function Feed() {
   return (
     <main className="flex-1 px-9 pb-5">
-      <PostGrid />
+      <PostList
+        fetchPage={fetchFeed}
+        includeCreated
+        emptyMessage="No posts yet. Create the first one!"
+      />
     </main>
   );
 }
