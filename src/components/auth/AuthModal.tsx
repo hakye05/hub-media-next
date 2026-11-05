@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
 import type { AuthMode } from "./AuthProvider";
 import LoginForm from "./LoginForm";
 import SignUpFlow from "./SignUpFlow";
+import Modal from "../ui/Modal";
 
 type Props = {
   mode: AuthMode;
@@ -12,38 +12,17 @@ type Props = {
 };
 
 export default function AuthModal({ mode, onClose, onSwitch }: Props) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onClose]);
-
   return (
-    <div
-      className="fixed inset-0 z-100 flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+    <Modal
+      label={mode === "login" ? "Log in" : "Sign up"}
+      onClose={onClose}
+      className="h-150 max-w-110 overflow-y-auto"
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={mode === "login" ? "Log in" : "Sign up"}
-        className="h-150 w-full max-w-110 overflow-y-auto rounded-4xl bg-white shadow-2xl"
-      >
-        {mode === "login" ? (
-          <LoginForm onClose={onClose} onSwitch={onSwitch} />
-        ) : (
-          <SignUpFlow onClose={onClose} onSwitch={onSwitch} />
-        )}
-      </div>
-    </div>
+      {mode === "login" ? (
+        <LoginForm onClose={onClose} onSwitch={onSwitch} />
+      ) : (
+        <SignUpFlow onClose={onClose} onSwitch={onSwitch} />
+      )}
+    </Modal>
   );
 }

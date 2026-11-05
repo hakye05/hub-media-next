@@ -10,7 +10,7 @@ import { Heading } from "../ui/Heading";
 import { PasswordField } from "../ui/fields/PasswordField";
 import { TextLink } from "../ui/TextLink";
 import { useAuth } from "./AuthProvider";
-import { ApiError } from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 
 export default function LoginForm({
   onClose,
@@ -36,11 +36,7 @@ export default function LoginForm({
       await login(email.trim(), password);
       onClose();
     } catch (err) {
-      setError(
-        err instanceof ApiError
-          ? err.message
-          : "Can't reach the server. Please try again."
-      );
+      setError(getErrorMessage(err));
     } finally {
       setBusy(false);
     }
