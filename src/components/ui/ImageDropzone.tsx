@@ -2,13 +2,16 @@
 
 import { useRef, type ChangeEvent, type DragEvent } from "react";
 import { ALLOWED_IMAGE_TYPES } from "@/lib/upload";
-import CloseIcon from "../../icons/CloseIcon";
-import ImageIcon from "../../icons/ImageIcon";
+import CloseIcon from "../icons/CloseIcon";
+import ImageIcon from "../icons/ImageIcon";
 
 type Props = {
   preview: string | null;
   uploading: boolean;
   disabled?: boolean;
+  busyLabel?: string;
+  previewClassName?: string;
+  placeholderClassName?: string;
   onPick: (file: File) => void;
   onClear: () => void;
 };
@@ -17,6 +20,9 @@ export default function ImageDropzone({
   preview,
   uploading,
   disabled = false,
+  busyLabel = "Uploading…",
+  previewClassName = "mx-auto block max-h-80 w-auto max-w-full object-contain",
+  placeholderClassName = "h-56",
   onPick,
   onClear,
 }: Props) {
@@ -38,15 +44,11 @@ export default function ImageDropzone({
     <div>
       {preview ? (
         <div className="relative overflow-hidden rounded-2xl bg-neutral-100">
-          <img
-            src={preview}
-            alt="Selected image preview"
-            className="mx-auto block max-h-80 w-auto max-w-full object-contain"
-          />
+          <img src={preview} alt="Selected image preview" className={previewClassName} />
 
           {uploading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white/60 text-[14px] font-medium text-neutral-700">
-              <span className="animate-pulse">Uploading…</span>
+              <span className="animate-pulse">{busyLabel}</span>
             </div>
           )}
 
@@ -67,7 +69,7 @@ export default function ImageDropzone({
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
-          className="flex h-56 w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-neutral-300 bg-[#faf9f8] text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+          className={`flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-neutral-300 bg-[#faf9f8] text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 ${placeholderClassName}`}
         >
           <ImageIcon />
           <span className="text-[15px] font-medium">Click or drop an image</span>

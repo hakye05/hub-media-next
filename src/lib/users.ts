@@ -64,4 +64,9 @@ export const usersApi = {
     api<UserMe>("/api/users/me/avatar", json({ uploadId }, "PATCH")),
 
   removeAvatar: () => api<UserMe>("/api/users/me/avatar", { method: "DELETE" }),
+
+  changeBanner: (uploadId: string) =>
+    api<UserMe>("/api/users/me/banner", json({ uploadId }, "PATCH")),
+
+  removeBanner: () => api<UserMe>("/api/users/me/banner", { method: "DELETE" }),
 };

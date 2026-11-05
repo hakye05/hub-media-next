@@ -10,8 +10,8 @@ import { FormGroup } from "../../ui/fields/FormGroup";
 import Modal from "../../ui/Modal";
 import StatusText from "../../ui/StatusText";
 import { useCreatedPosts } from "../CreatedPostsProvider";
-import ImageDropzone from "./ImageDropzone";
 import { useImageUpload } from "./useImageUpload";
+import ImageDropzone from "@/components/ui/ImageDropzone";
 
 const TITLE_MAX = 100;
 const DESCRIPTION_MAX = 500;

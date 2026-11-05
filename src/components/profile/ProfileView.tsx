@@ -53,10 +53,12 @@ export default function ProfileView({ username, children }: Props) {
     };
   }, [username, status, viewerId, reloadKey]);
 
+  const reload = () => setReloadKey((k) => k + 1);
+  
   function handleUpdated(me: UserMe) {
     // Keep the current tab when the username changes
     if (me.username !== username) router.replace(tabHref(me.username, segment));
-    else setReloadKey((k) => k + 1);
+    else reload();
   }
 
   // Blank until we know who is looking
@@ -75,7 +77,7 @@ export default function ProfileView({ username, children }: Props) {
 
   return (
     <main className="flex flex-col gap-10 pb-16">
-      <ProfileHeader profile={result.profile} />
+      <ProfileHeader profile={result.profile} onBannerChanged={reload} />
       <ProfileContent
         isSelf={result.profile.isSelf}
         username={result.profile.username}
