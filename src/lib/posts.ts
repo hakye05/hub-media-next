@@ -1,5 +1,6 @@
 import { api } from "./api";
 import type { CursorPage } from "./pagination";
+import { ProfileSummary } from "./users";
 
 // Mirrors PostResponse on the backend
 export type Post = {
@@ -15,10 +16,18 @@ export type Post = {
   savedByViewer: boolean;
 };
 
+export type PostDetail = Omit<Post, "userId"> & { author: ProfileSummary };
+
+
 export type CreatePostPayload = {
   uploadId: string;
   title: string;
   description?: string;
+};
+
+export type UpdatePostPayload = {
+  title?: string;
+  description?: string; // empty string clears it
 };
 
 const pageQuery = (cursor?: string | null, size = 20) => {
@@ -31,7 +40,11 @@ export const postsApi = {
   create: (payload: CreatePostPayload) =>
     api<Post>("/api/posts", { method: "POST", json: payload }),
 
-  // Assumed endpoint: adjust if your feed lives elsewhere
+  get: (id: string) => api<PostDetail>(`/api/posts/${encodeURIComponent(id)}`),
+
+  update: (id: string, payload: UpdatePostPayload) =>
+    api<Post>(`/api/posts/${encodeURIComponent(id)}`, { method: "PATCH", json: payload }),
+
   feed: (cursor?: string | null, size = 20) =>
     api<CursorPage<Post>>(`/api/posts?${pageQuery(cursor, size)}`),
 

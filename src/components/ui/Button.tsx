@@ -51,3 +51,29 @@ export function SolidButton({
     />
   );
 }
+
+type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { label: string };
+
+export function IconToolbarButton({ label, className = "", ...props }: IconButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      {...props}
+      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-neutral-300/70 bg-white text-neutral-900 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}
+
+export function IconSolidButton({ label, className = "", ...props }: IconButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      {...props}
+      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#111] text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}

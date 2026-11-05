@@ -33,6 +33,12 @@ export type UpdateProfilePayload = {
   gender?: string;
 };
 
+export type ProfileSummary = {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+};
+
 const json = (body: unknown, method: string) => ({ method, json: body });
 
 export const usersApi = {
