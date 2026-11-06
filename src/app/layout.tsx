@@ -4,6 +4,7 @@ import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
 import Navbar from "@/components/navbar/Navbar";
 import CreatedPostsProvider from "@/components/posts/CreatedPostsProvider";
+import SavePostProvider from "@/components/collections/save/SavePostProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <AuthProvider>
           <CreatedPostsProvider>
-            <Navbar />
-            {children}
+            <SavePostProvider>
+              <Navbar />
+              {children}
+            </SavePostProvider>
           </CreatedPostsProvider>
         </AuthProvider>
       </body>

@@ -123,3 +123,16 @@ export function DangerTextButton({
     />
   );
 }
+
+export function SmallSolidButton({
+  className = "",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={`inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-[#111] px-4 pb-px text-[14px] font-semibold leading-none tracking-tight text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}

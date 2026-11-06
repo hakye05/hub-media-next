@@ -76,7 +76,7 @@ export default function ProfileView({ username, children }: Props) {
   }
 
   return (
-    <main className="flex flex-col gap-10 pb-16">
+    <main className="flex flex-col pb-6">
       <ProfileHeader profile={result.profile} onBannerChanged={reload} />
       <ProfileContent
         isSelf={result.profile.isSelf}
