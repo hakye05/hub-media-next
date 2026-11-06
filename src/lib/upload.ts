@@ -1,6 +1,8 @@
 import { api, ApiError } from "./api";
 
-export type UploadKind = "AVATAR" | "POST";
+export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+export type UploadKind = "AVATAR" | "BANNER" | "POST";
 
 type PresignedUpload = {
   uploadId: string;

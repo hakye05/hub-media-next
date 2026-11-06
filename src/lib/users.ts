@@ -33,6 +33,12 @@ export type UpdateProfilePayload = {
   gender?: string;
 };
 
+export type ProfileSummary = {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+};
+
 const json = (body: unknown, method: string) => ({ method, json: body });
 
 export const usersApi = {
@@ -64,4 +70,9 @@ export const usersApi = {
     api<UserMe>("/api/users/me/avatar", json({ uploadId }, "PATCH")),
 
   removeAvatar: () => api<UserMe>("/api/users/me/avatar", { method: "DELETE" }),
+
+  changeBanner: (uploadId: string) =>
+    api<UserMe>("/api/users/me/banner", json({ uploadId }, "PATCH")),
+
+  removeBanner: () => api<UserMe>("/api/users/me/banner", { method: "DELETE" }),
 };

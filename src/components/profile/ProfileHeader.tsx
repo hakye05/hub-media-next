@@ -1,26 +1,29 @@
 import type { PublicProfile } from "@/lib/users";
 import Avatar from "../ui/Avatar";
 import ExpandableBio from "./ExpandableBio";
+import ProfileBanner from "./banner/ProfileBanner";
 
 const compact = new Intl.NumberFormat("en", {
   notation: "compact",
   maximumFractionDigits: 1,
 });
 
-export default function ProfileHeader({ profile }: { profile: PublicProfile }) {
+type Props = {
+  profile: PublicProfile;
+  onBannerChanged: () => void;
+};
+
+export default function ProfileHeader({ profile, onBannerChanged }: Props) {
   return (
     <header className="flex flex-col">
       {/* Banner: default gradient until the user uploads their own image */}
-      <div
-        className="h-48 w-full bg-linear-to-r from-sky-200 via-fuchsia-200 to-amber-200 bg-cover bg-center sm:h-56"
-        style={
-          profile.bannerUrl
-            ? { backgroundImage: `url("${profile.bannerUrl}")` }
-            : undefined
-        }
+      <ProfileBanner
+        bannerUrl={profile.bannerUrl ?? null}
+        isSelf={profile.isSelf}
+        onChanged={onBannerChanged}
       />
 
-      <div className="px-13 sm:px-17">
+      <div className="relative z-10 px-13 sm:px-17">
         <Avatar
           name={profile.displayName}
           src={profile.avatarUrl}

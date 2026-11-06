@@ -8,7 +8,7 @@ import NavHeader from "./NavHeader";
 import NavSearch from "./NavSearch";
 import NavTextButton from "./NavTextButton";
 import UserMenu from "./UserMenu";
-import PlusIcon from "../icons/PlusIcon";
+import CreatePostButton from "./CreatePostButton";
 
 const TABS = ["For You", "Following", "Explore"] as const;
 
@@ -41,13 +41,7 @@ export default function UserNavbar({ user }: { user: SessionUser }) {
 
       {/* Right: create + profile */}
       <div className="flex items-center justify-end gap-3">
-        <Link
-          href="/create"
-          className="inline-flex h-12 items-center gap-2 rounded-full border border-neutral-300/70 bg-white px-5 text-[15px] font-semibold tracking-tight text-neutral-900 transition-colors hover:bg-neutral-50"
-        >
-          <PlusIcon />
-          Create
-        </Link>
+        <CreatePostButton />
         <UserMenu user={user} />
       </div>
     </NavHeader>

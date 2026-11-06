@@ -3,6 +3,7 @@ import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
 import Navbar from "@/components/navbar/Navbar";
+import CreatedPostsProvider from "@/components/posts/CreatedPostsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +28,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body>
         <AuthProvider>
-          <Navbar />
-          {children}
+          <CreatedPostsProvider>
+            <Navbar />
+            {children}
+          </CreatedPostsProvider>
         </AuthProvider>
       </body>
     </html>

@@ -2,17 +2,13 @@
 
 import { useRef, useState, type ChangeEvent } from "react";
 import { getErrorMessage } from "@/lib/errors";
-import { uploadsApi } from "@/lib/upload";
+import { ALLOWED_IMAGE_TYPES, uploadsApi } from "@/lib/upload";
 import { usersApi, type UserMe } from "@/lib/users";
 import CameraIcon from "../../icons/CameraIcon";
 import CloseIcon from "../../icons/CloseIcon";
 import Avatar from "../../ui/Avatar";
 
-// Same list the backend accepts (ImageType)
-const ALLOWED = ["image/jpeg", "image/png", "image/webp"];
-
-const focusRing =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900";
+const focusRing ="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900";
 
 type Props = {
   me: UserMe;
@@ -29,7 +25,7 @@ export default function AvatarPicker({ me, onChange, onError }: Props) {
     e.target.value = ""; // allow picking the same file again
     if (!file) return;
 
-    if (!ALLOWED.includes(file.type)) {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       onError("Use a JPG, PNG or WebP image.");
       return;
     }
@@ -95,7 +91,7 @@ export default function AvatarPicker({ me, onChange, onError }: Props) {
       <input
         ref={inputRef}
         type="file"
-        accept={ALLOWED.join(",")}
+        accept={ALLOWED_IMAGE_TYPES.join(",")}
         onChange={onPick}
         className="hidden"
       />
