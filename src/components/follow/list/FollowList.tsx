@@ -7,9 +7,14 @@ import FollowUserRow from "./FollowUserRow";
 
 export type FollowKind = "followers" | "following";
 
-type Props = { username: string; kind: FollowKind; query: string };
+type Props = {
+  username: string;
+  kind: FollowKind;
+  query: string;
+  onFollowChange?: (following: boolean) => void;
+};
 
-export default function FollowList({ username, kind, query }: Props) {
+export default function FollowList({ username, kind, query, onFollowChange }: Props) {
   const { items, hasMore, loading, error, loadMore } = useCursorList((cursor) =>
     kind === "followers"
       ? followsApi.followers(username, cursor, 20, query)
@@ -20,7 +25,7 @@ export default function FollowList({ username, kind, query }: Props) {
     <>
       <ul className="flex flex-col">
         {items.map((u) => (
-          <FollowUserRow key={u.id} user={u} />
+          <FollowUserRow key={u.id} user={u} onFollowChange={onFollowChange} />
         ))}
       </ul>
       {!loading && !error && items.length === 0 && (

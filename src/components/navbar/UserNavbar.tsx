@@ -16,7 +16,6 @@ import CreatePostModal from "../posts/create/CreatePostModal";
 const TABS = [
   { label: "For You", href: "/" },
   { label: "Following", href: "/following" },
-  { label: "Explore", href: null },
 ] as const;
 
 export default function UserNavbar({ user }: { user: SessionUser }) {

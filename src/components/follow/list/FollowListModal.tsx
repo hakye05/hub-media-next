@@ -4,6 +4,7 @@ import { useState } from "react";
 import FollowList, { type FollowKind } from "./FollowList";
 import Modal from "@/components/ui/Modal";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
 
@@ -12,6 +13,7 @@ type Props = {
   initial: FollowKind;
   counts: Record<FollowKind, number>;
   onClose: () => void;
+  onFollowingDelta?: (delta: 1 | -1) => void;
 };
 
 const TABS: { kind: FollowKind; label: string }[] = [
@@ -19,10 +21,25 @@ const TABS: { kind: FollowKind; label: string }[] = [
   { kind: "following", label: "Following" },
 ];
 
-export default function FollowListModal({ username, initial, counts, onClose }: Props) {
+export default function FollowListModal({ username, initial, counts, onClose, onFollowingDelta }: Props) {
+  const { user } = useAuth();
   const [kind, setKind] = useState<FollowKind>(initial);
   const [query, setQuery] = useState("");
+  const [followingDelta, setFollowingDelta] = useState(0);
   const debounced = useDebouncedValue(query.trim());
+
+  const isOwn = user?.username === username;
+
+  function handleFollowChange(following: boolean) {
+    const delta = following ? 1 : -1;
+    if (onFollowingDelta) onFollowingDelta(delta);
+    else setFollowingDelta((d) => d + delta);
+  }
+
+  const shown: Record<FollowKind, number> = {
+    ...counts,
+    following: counts.following + followingDelta,
+  };
 
   return (
     <Modal onClose={onClose} label="Followers and following" className="max-w-105">
@@ -39,7 +56,7 @@ export default function FollowListModal({ username, initial, counts, onClose }: 
                   : "border-transparent text-neutral-400 hover:text-neutral-700"
               }`}
             >
-              {compact.format(counts[t.kind])} {t.label}
+              {compact.format(shown[t.kind])} {t.label}
             </button>
           ))}
         </div>
@@ -55,7 +72,13 @@ export default function FollowListModal({ username, initial, counts, onClose }: 
 
         <div className="flex-1 overflow-y-auto px-6 py-3">
           {/* key remounts the list so each tab starts from page one */}
-          <FollowList key={`${kind}:${debounced}`} username={username} kind={kind} query={debounced} />
+          <FollowList
+            key={`${kind}:${debounced}`}
+            username={username}
+            kind={kind}
+            query={debounced}
+            onFollowChange={isOwn ? handleFollowChange : undefined}
+          />
         </div>
       </div>
     </Modal>
