@@ -61,7 +61,7 @@ export function IconToolbarButton({ label, className = "", ...props }: IconButto
       aria-label={label}
       title={label}
       {...props}
-      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-neutral-300/70 bg-white text-neutral-900 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-neutral-300/70 bg-white text-neutral-900 transition-colors hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     />
   );
 }
@@ -74,6 +74,45 @@ export function IconSolidButton({ label, className = "", ...props }: IconButtonP
       title={label}
       {...props}
       className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#111] text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}
+
+export function IconDangerButton({ label, className = "", ...props }: IconButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      {...props}
+      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-600 text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}
+
+export function DangerButton({
+  className = "",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={`inline-flex h-12 items-center justify-center rounded-full bg-red-600 px-7 text-[15px] font-semibold tracking-tight text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}
+
+
+export function DangerTextButton({
+  className = "",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={`inline-flex h-12 w-full items-center justify-center rounded-full text-[15px] font-semibold tracking-tight text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     />
   );
 }

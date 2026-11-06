@@ -10,6 +10,7 @@ import EditPostModal from "./EditPostModal";
 import PostImage from "./PostImage";
 import PostInfo from "./PostInfo";
 import ProfilePosts from "../profile/posts/ProfilePosts";
+import { useRouter } from "next/navigation";
 
 type Result = {
   id: string;
@@ -24,6 +25,13 @@ export default function PostView({ id }: { id: string }) {
   const [editing, setEditing] = useState(false);
   const closeEditor = useCallback(() => setEditing(false), []);
   const viewerId = user?.id ?? null;
+
+  const router = useRouter();
+
+  function handleDeleted() {
+    router.replace(`/${post.author.username}`);
+    router.refresh();
+  }
 
   useEffect(() => {
     if (status === "loading") return;
@@ -52,14 +60,14 @@ export default function PostView({ id }: { id: string }) {
     setResult((r) =>
       r?.post
         ? {
-            ...r,
-            post: {
-              ...r.post,
-              title: updated.title,
-              description: updated.description,
-              updatedAt: updated.updatedAt,
-            },
-          }
+          ...r,
+          post: {
+            ...r.post,
+            title: updated.title,
+            description: updated.description,
+            updatedAt: updated.updatedAt,
+          },
+        }
         : r
     );
   }
@@ -81,7 +89,12 @@ export default function PostView({ id }: { id: string }) {
     <>
       <main className="mx-auto flex w-full max-w-6xl flex-col items-center px-9 pb-10">
         <div className="flex w-fit flex-col gap-8">
-          <PostImage post={post} isAuthor={isAuthor} onEdit={() => setEditing(true)} />
+          <PostImage
+            post={post}
+            isAuthor={isAuthor}
+            onEdit={() => setEditing(true)}
+            onDeleted={handleDeleted}
+          />
           <PostInfo post={post} />
         </div>
       </main>

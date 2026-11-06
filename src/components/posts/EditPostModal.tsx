@@ -90,7 +90,7 @@ export default function EditPostModal({ post, onClose, onSaved }: Props) {
           </FormGroup>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-neutral-200 px-8 py-4">
+        <div className="flex flex-col gap-3 border-t border-neutral-200 px-8 pt-6 pb-8">
           <StatusText status={error ? { type: "error", text: error } : null} />
           <SolidButton disabled={!canSave} className="w-full">
             {busy ? "Saving…" : "Save changes"}

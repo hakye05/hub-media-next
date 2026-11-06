@@ -45,6 +45,9 @@ export const postsApi = {
   update: (id: string, payload: UpdatePostPayload) =>
     api<Post>(`/api/posts/${encodeURIComponent(id)}`, { method: "PATCH", json: payload }),
 
+  delete: (id: string) =>
+    api<void>(`/api/posts/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
   feed: (cursor?: string | null, size = 20) =>
     api<CursorPage<Post>>(`/api/posts?${pageQuery(cursor, size)}`),
 
