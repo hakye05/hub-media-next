@@ -1,4 +1,5 @@
 import { api, AuthResponse } from "./api";
+import { CursorPage, searchQuery } from "./pagination";
 
 export type PublicProfile = {
   id: string;
@@ -34,9 +35,12 @@ export type UpdateProfilePayload = {
 };
 
 export type ProfileSummary = {
+  id: string;
   username: string;
   displayName: string;
   avatarUrl: string | null;
+  isSelf: boolean;
+  isFollowing: boolean;
 };
 
 const json = (body: unknown, method: string) => ({ method, json: body });
@@ -75,4 +79,7 @@ export const usersApi = {
     api<UserMe>("/api/users/me/banner", json({ uploadId }, "PATCH")),
 
   removeBanner: () => api<UserMe>("/api/users/me/banner", { method: "DELETE" }),
+
+  search: (q: string, cursor?: string | null, size = 20) =>
+    api<CursorPage<ProfileSummary>>(`/api/users/search?${searchQuery(q, cursor, size)}`),
 };

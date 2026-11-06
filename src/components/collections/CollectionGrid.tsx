@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import type { Collection } from "@/lib/collections";
+import type { CollectionItem } from "@/lib/collections";
 import CollectionCard from "./CollectionCard";
 
-type Props = { collections: Collection[]; username: string; leading?: ReactNode };
+type Props = { collections: CollectionItem[]; username?: string; leading?: ReactNode };
 
 export default function CollectionGrid({ collections, username, leading }: Props) {
   return (

@@ -2,6 +2,7 @@ import type { PublicProfile } from "@/lib/users";
 import Avatar from "../ui/Avatar";
 import ExpandableBio from "./ExpandableBio";
 import ProfileBanner from "./banner/ProfileBanner";
+import ProfileFollowSection from "./ProfileFollowSection";
 
 const compact = new Intl.NumberFormat("en", {
   notation: "compact",
@@ -40,10 +41,7 @@ export default function ProfileHeader({ profile, onBannerChanged }: Props) {
 
         {profile.bio && <ExpandableBio key={profile.id} text={profile.bio} />}
 
-        <p className="mt-1 text-[14px] font-semibold text-neutral-900">
-          {compact.format(profile.followerCount)} followers ·{" "}
-          {compact.format(profile.followingCount)} following
-        </p>
+        <ProfileFollowSection profile={profile} />
       </div>
     </header>
   );

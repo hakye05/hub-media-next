@@ -1,12 +1,33 @@
 import Image from "next/image";
+import { usePathname, useSearchParams } from "next/navigation";
 import ColorDots from "../ui/ColorDots";
+import { useSearchSubmit } from "./useSearchSubmit";
 
 export default function NavSearch() {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const q = pathname === "/search" ? (params.get("q") ?? "").trim() : "";
+
+  // key remounts the form when the query changes, so the input always shows the searched word
+  return <NavSearchForm key={q} initialValue={q} />;
+}
+
+function NavSearchForm({ initialValue }: { initialValue: string }) {
+  const { value, setValue, onSubmit } = useSearchSubmit(initialValue);
+
   return (
-    <div className="flex h-12 w-full items-center gap-3 rounded-full border border-neutral-300/70 bg-white/60 pl-5 pr-4 transition-colors focus-within:bg-white">
+    <form
+      role="search"
+      onSubmit={onSubmit}
+      className="flex h-12 w-full items-center gap-3 rounded-full border border-neutral-300/70 bg-white/60 pl-5 pr-4 transition-colors focus-within:bg-white"
+    >
       <Image src="/search.svg" alt="" width={22} height={22} />
       <input
         type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        enterKeyHint="search"
+        aria-label="Search"
         placeholder="Try 'traditional pottery techniques'"
         className="min-w-0 flex-1 bg-transparent text-[15px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
       />
@@ -39,6 +60,6 @@ export default function NavSearch() {
       >
         <ColorDots dotClassName="h-1 w-1" radius={8} />
       </button>
-    </div>
+    </form>
   );
 }
