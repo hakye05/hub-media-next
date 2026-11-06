@@ -20,7 +20,7 @@ async function fetchAllCollections(username: string) {
 }
 
 export function useCollectionPicker({ postId, username, wasSaved }: Args) {
-  const { isSaved, setSaved } = useSavePost();
+  const { isSaved, setSaved, setRemoved } = useSavePost();
   const saved = isSaved(postId, wasSaved);
 
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -94,11 +94,9 @@ export function useCollectionPicker({ postId, username, wasSaved }: Args) {
       await ready.current;
       if (saved) {
         await setSaved(postId, false);
-        // The server drops the post from every collection when it is unsaved
+        memberOf.forEach((id) => setRemoved(id, postId, true));
         adjustCount(memberOf, -1);
         setMemberOf(new Set());
-      } else {
-        await setSaved(postId, true);
       }
     });
 
@@ -107,15 +105,13 @@ export function useCollectionPicker({ postId, username, wasSaved }: Args) {
       await ready.current;
       if (memberOf.has(id)) {
         await collectionsApi.removePost(id, postId);
-        setMemberOf((m) => {
-          const next = new Set(m);
-          next.delete(id);
-          return next;
-        });
+        setRemoved(id, postId, true);
+        setMemberOf((m) => { const next = new Set(m); next.delete(id); return next; });
         adjustCount(new Set([id]), -1);
       } else {
         if (!saved) await setSaved(postId, true);
         await collectionsApi.addPost(id, postId);
+        setRemoved(id, postId, false);
         setMemberOf((m) => new Set(m).add(id));
         adjustCount(new Set([id]), 1);
       }

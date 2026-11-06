@@ -51,7 +51,7 @@ export default function CollectionView({ id }: { id: string }) {
     return result.notFound ? (
       <PageMessage
         title="Collection not found"
-        message="This collection doesn't exist or is private."
+        message="This collection doesn't exist."
       />
     ) : (
       <PageMessage title="Something went wrong" message={result.error ?? "Please try again."} />

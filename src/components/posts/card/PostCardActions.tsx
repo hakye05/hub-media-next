@@ -23,7 +23,7 @@ export default function PostCardActions({ post, onDeleted }: Props) {
 
       {/* Stays visible while its menu is open */}
       <div
-        className={`absolute bottom-3 right-3 has-[[aria-expanded=true]]:opacity-100 ${REVEAL}`}
+        className={`absolute bottom-3 right-3 has-aria-expanded:opacity-100 ${REVEAL}`}
       >
         <PostCardMenu post={post} isAuthor={isAuthor} onDeleted={onDeleted} />
       </div>

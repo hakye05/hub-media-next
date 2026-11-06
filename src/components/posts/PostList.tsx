@@ -15,6 +15,7 @@ type Props = {
   noMatchMessage?: string;
   filter?: (post: Post) => boolean;
   hideUnsaved?: boolean;
+  removedIds?: ReadonlySet<string>;
 };
 
 export default function PostList({
@@ -24,6 +25,7 @@ export default function PostList({
   noMatchMessage = "No posts match your search.",
   filter,
   hideUnsaved = false,
+  removedIds,
 }: Props) {
   const { posts, loading, error, hasMore, loadMore, retry, remove } = usePostList(
     fetchPage,
@@ -34,9 +36,12 @@ export default function PostList({
   const visible = useMemo(
     () =>
       posts.filter(
-        (p) => (!hideUnsaved || isSaved(p.id, true)) && (!filter || filter(p))
+        (p) =>
+          (!hideUnsaved || isSaved(p.id, true)) &&
+          (!filter || filter(p)) &&
+          !removedIds?.has(p.id)
       ),
-    [posts, hideUnsaved, isSaved, filter]
+    [posts, hideUnsaved, isSaved, filter, removedIds]
   );
 
   const filteredOut = Boolean(filter) && posts.length > 0;

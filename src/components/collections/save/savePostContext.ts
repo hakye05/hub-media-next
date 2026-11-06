@@ -7,6 +7,11 @@ export type SavePostValue = {
   setSaved: (postId: string, saved: boolean) => Promise<void>;
   /** Save button click: opens the picker (and saves the post if it isn't saved yet). */
   openSave: (postId: string, saved: boolean) => void;
+  /** Post IDs optimistically removed from a collection, keyed by collection id. */
+  removedFrom: (collectionId: string) => ReadonlySet<string>;
+  clearRemoved: (collectionId: string) => void;
+  /** Record that a post was removed from / added back to a collection. */
+  setRemoved: (collectionId: string, postId: string, removed: boolean) => void;
 };
 
 export const SavePostContext = createContext<SavePostValue | null>(null);
