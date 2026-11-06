@@ -20,7 +20,7 @@ export default function PostCard({ post, onDeleted }: Props) {
           decoding="async"
           className="block h-auto w-full"
         />
-        <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-linear-to-t from-black/60 to-transparent py-3 pl-4 pr-24 pt-8 text-[14px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
+        <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-linear-to-t from-black/60 to-transparent py-3 pl-4 pr-14 pt-8 text-[14px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
           {post.title}
         </figcaption>
       </Link>

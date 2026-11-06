@@ -1,7 +1,7 @@
 export const PROFILE_TABS = [
   { label: "Posts", segment: null },
   { label: "Collections", segment: "collections" },
-  { label: "Saved", segment: "saved" },
+  { label: "Saved", segment: "saved", ownerOnly: true },
 ] as const;
 
 /** Posts lives at /username, every other tab at /username/<segment> */

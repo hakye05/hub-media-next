@@ -28,7 +28,7 @@ export default function PostActions({ post, isAuthor, onEdit, onDeleted }: Props
           </>
         )}
       </div>
-      <SavePostButton saved={post.savedByViewer} />
+      <SavePostButton postId={post.id} saved={post.savedByViewer} />
     </div>
   );
 }

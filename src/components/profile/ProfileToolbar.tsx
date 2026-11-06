@@ -23,7 +23,7 @@ export default function ProfileToolbar({
         <ShareProfileButton username={username} />
       </div>
 
-      <ProfileTabs username={username} activeSegment={activeSegment} />
+      <ProfileTabs username={username} activeSegment={activeSegment} isSelf={isSelf} />
 
       <div className="flex justify-end">
         <ToolbarButton>

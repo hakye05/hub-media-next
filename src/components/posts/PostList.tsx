@@ -1,5 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
+import { useSavePost } from "../collections/save/savePostContext";
+import type { Post } from "@/lib/posts";
 import ListMessage from "./ListMessage";
 import LoadMoreSentinel from "./LoadMoreSentinel";
 import PostGrid from "./PostGrid";
@@ -9,17 +12,43 @@ type Props = {
   fetchPage: FetchPage;
   includeCreated?: boolean;
   emptyMessage: string;
+  noMatchMessage?: string;
+  filter?: (post: Post) => boolean;
+  hideUnsaved?: boolean;
+  removedIds?: ReadonlySet<string>;
 };
 
-export default function PostList({ fetchPage, includeCreated = false, emptyMessage }: Props) {
-  const { posts, loading, error, hasMore, loadMore, retry, remove } = usePostList(
+export default function PostList({
   fetchPage,
-  includeCreated
-);
+  includeCreated = false,
+  emptyMessage,
+  noMatchMessage = "No posts match your search.",
+  filter,
+  hideUnsaved = false,
+  removedIds,
+}: Props) {
+  const { posts, loading, error, hasMore, loadMore, retry, remove } = usePostList(
+    fetchPage,
+    includeCreated
+  );
+  const { isSaved } = useSavePost();
+
+  const visible = useMemo(
+    () =>
+      posts.filter(
+        (p) =>
+          (!hideUnsaved || isSaved(p.id, true)) &&
+          (!filter || filter(p)) &&
+          !removedIds?.has(p.id)
+      ),
+    [posts, hideUnsaved, isSaved, filter, removedIds]
+  );
+
+  const filteredOut = Boolean(filter) && posts.length > 0;
 
   return (
     <>
-      {posts.length > 0 && <PostGrid posts={posts} onDeleted={remove} />}
+      {visible.length > 0 && <PostGrid posts={visible} onDeleted={remove} />}
 
       {loading && <ListMessage>Loading…</ListMessage>}
       {error && (
@@ -27,7 +56,9 @@ export default function PostList({ fetchPage, includeCreated = false, emptyMessa
           {error}
         </ListMessage>
       )}
-      {!loading && !error && posts.length === 0 && <ListMessage>{emptyMessage}</ListMessage>}
+      {!loading && !error && visible.length === 0 && (
+        <ListMessage>{filteredOut ? noMatchMessage : emptyMessage}</ListMessage>
+      )}
 
       {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} />}
     </>

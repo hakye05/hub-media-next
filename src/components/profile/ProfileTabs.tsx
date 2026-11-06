@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { PROFILE_TABS, tabHref } from "./tabs";
 
-type Props = { username: string; activeSegment: string | null };
+type Props = { username: string; activeSegment: string | null; isSelf: boolean };
 
-export default function ProfileTabs({ username, activeSegment }: Props) {
+export default function ProfileTabs({ username, activeSegment, isSelf }: Props) {
+  const tabs = PROFILE_TABS.filter((t) => !("ownerOnly" in t && t.ownerOnly) || isSelf);
+
   return (
     <nav
       aria-label="Profile sections"
       className="inline-flex rounded-full border border-neutral-300/70 p-1"
     >
-      {PROFILE_TABS.map(({ label, segment }) => {
+      {tabs.map(({ label, segment }) => {
         const active = segment === activeSegment;
         return (
           <Link
