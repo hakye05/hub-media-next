@@ -1,5 +1,5 @@
 import { api } from "./api";
-import type { CursorPage } from "./pagination";
+import { searchQuery, type CursorPage } from "./pagination";
 import { ProfileSummary } from "./users";
 
 // Mirrors PostResponse on the backend
@@ -55,4 +55,10 @@ export const postsApi = {
     api<CursorPage<Post>>(
       `/api/users/${encodeURIComponent(username)}/posts?${pageQuery(cursor, size)}`
     ),
+
+  following: (cursor?: string | null, size = 20) =>
+    api<CursorPage<PostDetail>>(`/api/posts/following?${pageQuery(cursor, size)}`),
+
+  search: (q: string, cursor?: string | null, size = 20) =>
+    api<CursorPage<Post>>(`/api/posts/search?${searchQuery(q, cursor, size)}`),
 };

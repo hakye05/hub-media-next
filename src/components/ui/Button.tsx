@@ -136,3 +136,16 @@ export function SmallSolidButton({
     />
   );
 }
+
+export function OutlineSmallButton({
+  className = "",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={`inline-flex h-12 shrink-0 items-center justify-center rounded-full border border-neutral-300/70 bg-white px-5 pb-px text-[14px] font-semibold leading-none tracking-tight text-neutral-900 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    />
+  );
+}

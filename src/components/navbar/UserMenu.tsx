@@ -6,7 +6,7 @@ import type { SessionUser } from "../auth/AuthProvider";
 import { useAuth } from "../auth/AuthProvider";
 import Avatar from "../ui/Avatar";
 
-export default function UserMenu({ user }: { user: SessionUser }) {
+export default function UserMenu({ user, onCreate }: { user: SessionUser; onCreate: () => void }) {
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -91,6 +91,19 @@ export default function UserMenu({ user }: { user: SessionUser }) {
           </div>
 
           <div className="my-2 h-px bg-neutral-200" />
+
+          {/* Only shown when the navbar's Create button is hidden (below md) */}
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setOpen(false);
+              onCreate();
+            }}
+            className="w-full rounded-2xl px-3 py-3 text-left text-[16px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 md:hidden"
+          >
+            Create
+          </button>
 
           <button
             type="button"
