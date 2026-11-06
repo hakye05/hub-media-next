@@ -1,10 +1,16 @@
 import Link from "next/link";
-import type { Collection } from "@/lib/collections";
+import type { CollectionItem } from "@/lib/collections";
 import { collectionSubtitle } from "./format";
 
-export default function CollectionCard({ collection,  username }: { collection: Collection, username: string }) {
+type Props = { collection: CollectionItem; username?: string };
+
+export default function CollectionCard({ collection, username }: Props) {
+  // Profile lists pass the username; search results carry the owner on the item.
+  // The collection route only uses the id, so userId is a harmless last resort.
+  const owner = username ?? collection.owner?.username ?? collection.userId;
+
   return (
-    <Link href={`/${username}/collection/${collection.id}`} className="group block">
+    <Link href={`/${owner}/collection/${collection.id}`} className="group block">
       <div className="aspect-square overflow-hidden rounded-2xl bg-neutral-200/60">
         {collection.coverImageUrl && (
           <img

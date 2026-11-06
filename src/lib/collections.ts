@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { pageQuery, type CursorPage } from "./pagination";
+import { pageQuery, searchQuery, type CursorPage } from "./pagination";
 import type { Post } from "./posts";
 import type { ProfileSummary } from "./users";
 
@@ -24,6 +24,12 @@ export type CollectionDetail = Omit<Collection, "userId" | "postCount" | "coverI
 // Mirrors CollectionSummaryResponse
 export type CollectionSummary = Pick<Collection, "id" | "title" | "isPublic">;
 
+// Mirrors CollectionSearchResponse
+export type CollectionSearchResult = Collection & { owner: ProfileSummary };
+
+/** What collection lists render: profile lists omit the owner, search results include it */
+export type CollectionItem = Collection & { owner?: ProfileSummary };
+
 export type CreateCollectionPayload = { title: string; isPublic: boolean };
 export type UpdateCollectionPayload = { title?: string; isPublic?: boolean };
 
@@ -43,6 +49,11 @@ export const collectionsApi = {
   byUsername: (username: string, cursor?: string | null, size = 20) =>
     api<CursorPage<Collection>>(
       `/api/users/${enc(username)}/collections?${pageQuery(cursor, size)}`
+    ),
+
+  search: (q: string, cursor?: string | null, size = 20) =>
+    api<CursorPage<CollectionSearchResult>>(
+      `/api/collections/search?${searchQuery(q, cursor, size)}`
     ),
 
   posts: (id: string, cursor?: string | null, size = 20) =>

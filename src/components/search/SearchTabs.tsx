@@ -1,10 +1,11 @@
 import Link from "next/link";
 
-export type SearchType = "posts" | "people";
+export type SearchType = "posts" | "people" | "collections";
 
 const TABS: { type: SearchType; label: string }[] = [
   { type: "posts", label: "Posts" },
   { type: "people", label: "People" },
+  { type: "collections", label: "Collections" },
 ];
 
 export default function SearchTabs({ q, active }: { q: string; active: SearchType }) {

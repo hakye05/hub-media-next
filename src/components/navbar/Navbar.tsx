@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAuth } from "../auth/AuthProvider";
 import NavHeader from "./NavHeader";
+import NavSearch from "./NavSearch";
 import NavTextButton from "./NavTextButton";
 import UserNavbar from "./UserNavbar";
 
 export default function Navbar() {
   const { openAuth, user, status } = useAuth();
+  const pathname = usePathname();
 
   if (status === "loading") {
     return <NavHeader />;
@@ -18,8 +21,17 @@ export default function Navbar() {
     return <UserNavbar user={user} />;
   }
 
+  // On /search the search field takes the middle logo's place, so guests get the same bar users do
+  const onSearch = pathname === "/search";
+
   return (
-    <NavHeader className="relative flex items-center justify-between">
+    <NavHeader
+      className={
+        onSearch
+          ? "grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-6"
+          : "relative flex items-center justify-between"
+      }
+    >
       {/* Left: logo + about */}
       <div className="flex items-center gap-6">
         <Link href="/" className="flex items-center">
@@ -30,10 +42,14 @@ export default function Navbar() {
         <NavTextButton>About</NavTextButton>
       </div>
 
-      {/* Center: wordmark */}
-      <span className="absolute left-1/2 -translate-x-1/2 text-[22px] font-bold tracking-tight">
-        HAKYE-HUB
-      </span>
+      {/* Center: search field on /search, wordmark elsewhere */}
+      {onSearch ? (
+        <NavSearch />
+      ) : (
+        <span className="absolute left-1/2 -translate-x-1/2 text-[22px] font-bold tracking-tight">
+          HAKYE-HUB
+        </span>
+      )}
 
       {/* Right: login + signup */}
       <div className="flex items-center gap-7">
