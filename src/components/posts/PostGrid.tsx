@@ -1,12 +1,14 @@
 import type { Post } from "@/lib/posts";
-import PostCard from "./PostCard";
+import PostCard from "./card/PostCard";
 
-export default function PostGrid({ posts }: { posts: Post[] }) {
+type Props = { posts: Post[]; onDeleted?: (id: string) => void };
+
+export default function PostGrid({ posts, onDeleted }: Props) {
   return (
     <div className="columns-2 gap-5 sm:columns-3 md:columns-4 lg:columns-5">
       {posts.map((post) => (
         <div key={post.id} className="mb-5 break-inside-avoid">
-          <PostCard post={post} />
+          <PostCard post={post} onDeleted={onDeleted} />
         </div>
       ))}
     </div>

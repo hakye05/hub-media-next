@@ -12,9 +12,9 @@ import type { Post } from "@/lib/posts";
 import { useAuth } from "../auth/AuthProvider";
 
 type Value = {
-  /** Posts created in this session by the current user, newest first */
   created: Post[];
   add: (post: Post) => void;
+  remove: (id: string) => void;
 };
 
 type State = { ownerId: string | null; posts: Post[] };
@@ -42,10 +42,15 @@ export default function CreatedPostsProvider({ children }: { children: ReactNode
     []
   );
 
+  const remove = useCallback(
+    (id: string) => setState((s) => ({ ...s, posts: s.posts.filter((p) => p.id !== id) })),
+    []
+  );
+
   // Another account logging in must not see the previous user's posts
   const value = useMemo<Value>(
-    () => ({ created: state.ownerId === userId ? state.posts : EMPTY, add }),
-    [state, userId, add]
+    () => ({ created: state.ownerId === userId ? state.posts : EMPTY, add, remove }),
+    [state, userId, add, remove]
   );
 
   return <CreatedPostsContext.Provider value={value}>{children}</CreatedPostsContext.Provider>;

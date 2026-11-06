@@ -12,14 +12,14 @@ type Props = {
 };
 
 export default function PostList({ fetchPage, includeCreated = false, emptyMessage }: Props) {
-  const { posts, loading, error, hasMore, loadMore, retry } = usePostList(
-    fetchPage,
-    includeCreated
-  );
+  const { posts, loading, error, hasMore, loadMore, retry, remove } = usePostList(
+  fetchPage,
+  includeCreated
+);
 
   return (
     <>
-      {posts.length > 0 && <PostGrid posts={posts} />}
+      {posts.length > 0 && <PostGrid posts={posts} onDeleted={remove} />}
 
       {loading && <ListMessage>Loading…</ListMessage>}
       {error && (

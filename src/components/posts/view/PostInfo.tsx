@@ -1,5 +1,5 @@
 import type { PostDetail } from "@/lib/posts";
-import PostAuthor from "./PostAuthor";
+import PostAuthor from "../PostAuthor";
 
 const dateFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 

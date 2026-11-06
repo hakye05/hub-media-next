@@ -4,12 +4,12 @@ import { useCallback, useEffect, useState } from "react";
 import { ApiError } from "@/lib/api";
 import { getErrorMessage } from "@/lib/errors";
 import { postsApi, type Post, type PostDetail } from "@/lib/posts";
-import { useAuth } from "../auth/AuthProvider";
-import PageMessage from "../ui/PageMessage";
+import { useAuth } from "@/components/auth/AuthProvider";
+import PageMessage from "@/components/ui/PageMessage";
 import EditPostModal from "./EditPostModal";
 import PostImage from "./PostImage";
 import PostInfo from "./PostInfo";
-import ProfilePosts from "../profile/posts/ProfilePosts";
+import ProfilePosts from "@/components/profile/posts/ProfilePosts";
 import { useRouter } from "next/navigation";
 
 type Result = {

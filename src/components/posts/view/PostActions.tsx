@@ -1,10 +1,10 @@
 import type { PostDetail } from "@/lib/posts";
-import PencilIcon from "../icons/PencilIcon";
-import { IconToolbarButton } from "../ui/Button";
-import CopyLinkButton from "../ui/CopyLinkButton";
-import DeletePostButton from "./DeletePostButton";
-import DownloadButton from "./DownloadButton";
-import SavePostButton from "./SavePostButton";
+import PencilIcon from "@/components/icons/PencilIcon";
+import { IconToolbarButton } from "@/components/ui/Button";
+import CopyLinkButton from "@/components/ui/CopyLinkButton";
+import DeletePostButton from "../buttons/DeletePostButton";
+import DownloadButton from "../buttons/DownloadButton";
+import SavePostButton from "../buttons/SavePostButton";
 
 type Props = {
   post: PostDetail;

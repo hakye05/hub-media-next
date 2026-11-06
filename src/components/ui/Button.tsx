@@ -66,14 +66,22 @@ export function IconToolbarButton({ label, className = "", ...props }: IconButto
   );
 }
 
-export function IconSolidButton({ label, className = "", ...props }: IconButtonProps) {
+type IconSolidButtonProps = IconButtonProps & { size?: "md" | "sm" };
+const ICON_SOLID_SIZE = { md: "h-12 w-12", sm: "h-9 w-9" };
+
+export function IconSolidButton({
+  label,
+  size = "md",
+  className = "",
+  ...props
+}: IconSolidButtonProps) {
   return (
     <button
       type="button"
       aria-label={label}
       title={label}
       {...props}
-      className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#111] text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex ${ICON_SOLID_SIZE[size]} shrink-0 items-center justify-center rounded-full bg-[#111] text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     />
   );
 }
@@ -102,7 +110,6 @@ export function DangerButton({
     />
   );
 }
-
 
 export function DangerTextButton({
   className = "",

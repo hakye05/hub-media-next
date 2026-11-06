@@ -4,12 +4,12 @@ import { useState, type SyntheticEvent } from "react";
 import { getErrorMessage } from "@/lib/errors";
 import { POST_DESCRIPTION_MAX, POST_TITLE_MAX } from "@/lib/postLimits";
 import { postsApi, type Post, type PostDetail } from "@/lib/posts";
-import CloseIcon from "../icons/CloseIcon";
-import { SolidButton } from "../ui/Button";
-import { SoftField, SoftTextArea } from "../ui/fields/Field";
-import { FormGroup } from "../ui/fields/FormGroup";
-import Modal from "../ui/Modal";
-import StatusText from "../ui/StatusText";
+import CloseIcon from "@/components/icons/CloseIcon";
+import { SolidButton } from "@/components/ui/Button";
+import { SoftField, SoftTextArea } from "@/components/ui/fields/Field";
+import { FormGroup } from "@/components/ui/fields/FormGroup";
+import Modal from "@/components/ui/Modal";
+import StatusText from "@/components/ui/StatusText";
 
 type Props = {
   post: PostDetail;

@@ -1,4 +1,4 @@
-import PostView from "@/components/posts/PostView";
+import PostView from "@/components/posts/view/PostView";
 import { Suspense } from "react";
 
 export const instant = false;

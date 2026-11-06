@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { downloadImage } from "@/lib/downloadImage";
-import DownloadIcon from "../icons/DownloadIcon";
-import { IconToolbarButton } from "../ui/Button";
+import DownloadIcon from "@/components/icons/DownloadIcon";
+import { IconToolbarButton } from "@/components/ui/Button";
 
 type Props = { url: string; title: string };
 
