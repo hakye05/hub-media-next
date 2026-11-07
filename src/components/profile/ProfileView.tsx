@@ -10,6 +10,7 @@ import ProfileError from "./ProfileError";
 import ProfileHeader from "./ProfileHeader";
 import ProfileContent from "./ProfileContent";
 import { tabHref } from "./tabs";
+import { ProfileFollowProvider } from "./ProfileFollowContext";
 
 type Result = {
   username: string;
@@ -76,16 +77,18 @@ export default function ProfileView({ username, children }: Props) {
   }
 
   return (
-    <main className="flex flex-col pb-6">
-      <ProfileHeader profile={result.profile} onBannerChanged={reload} />
-      <ProfileContent
-        isSelf={result.profile.isSelf}
-        username={result.profile.username}
-        activeSegment={segment}
-        onProfileUpdated={handleUpdated}
-      >
-        {children}
-      </ProfileContent>
-    </main>
+    <ProfileFollowProvider key={result.profile.id} profile={result.profile}>
+      <main className="flex flex-col pb-6">
+        <ProfileHeader profile={result.profile} onBannerChanged={reload} />
+        <ProfileContent
+          isSelf={result.profile.isSelf}
+          username={result.profile.username}
+          activeSegment={segment}
+          onProfileUpdated={handleUpdated}
+        >
+          {children}
+        </ProfileContent>
+      </main>
+    </ProfileFollowProvider>
   );
 }
