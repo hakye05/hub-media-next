@@ -1,8 +1,10 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import { getErrorMessage } from "@/lib/errors";
-import { postsApi } from "@/lib/posts";
 
-export function useDeletePost(postId: string, onDeleted: () => void) {
+/** Busy/error tracking for a one-shot async action (delete, submit, …). */
+export function useAsyncAction(action: () => Promise<unknown>, onDone?: () => void) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -10,13 +12,13 @@ export function useDeletePost(postId: string, onDeleted: () => void) {
     setBusy(true);
     setError(null);
     try {
-      await postsApi.delete(postId);
-      onDeleted();
+      await action();
+      onDone?.();
     } catch (err) {
       setError(getErrorMessage(err));
       setBusy(false);
     }
-  }, [postId, onDeleted]);
+  }, [action, onDone]);
 
   return { busy, error, run };
 }

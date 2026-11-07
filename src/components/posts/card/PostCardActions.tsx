@@ -2,7 +2,7 @@
 
 import type { Post } from "@/lib/posts";
 import PostCardMenu from "./PostCardMenu";
-import SaveTextButton from "../buttons/SaveTextButton";
+import SavePostButton from "../buttons/SavePostButton";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 type Props = { post: Post; onDeleted: (id: string) => void };
@@ -18,7 +18,7 @@ export default function PostCardActions({ post, onDeleted }: Props) {
   return (
     <>
       <div className={`absolute right-3 top-3 ${REVEAL}`}>
-        <SaveTextButton postId={post.id} saved={post.savedByViewer} />
+        <SavePostButton variant="text" postId={post.id} saved={post.savedByViewer} />
       </div>
 
       {/* Stays visible while its menu is open */}

@@ -4,6 +4,7 @@ import { followsApi } from "@/lib/follows";
 import { useCursorList } from "@/lib/useCursorList";
 import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
 import FollowUserRow from "./FollowUserRow";
+import { useCallback } from "react";
 
 export type FollowKind = "followers" | "following";
 
@@ -15,11 +16,14 @@ type Props = {
 };
 
 export default function FollowList({ username, kind, query, onFollowChange }: Props) {
-  const { items, hasMore, loading, error, loadMore } = useCursorList((cursor) =>
-    kind === "followers"
-      ? followsApi.followers(username, cursor, 20, query)
-      : followsApi.following(username, cursor, 20, query)
+  const fetchPage = useCallback(
+    (cursor: string | null) =>
+      kind === "followers"
+        ? followsApi.followers(username, cursor, 20, query)
+        : followsApi.following(username, cursor, 20, query),
+    [username, kind, query]
   );
+  const { items, hasMore, loading, error, loadMore } = useCursorList(fetchPage);
 
   return (
     <>

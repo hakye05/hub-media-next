@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ListMessage from "@/components/posts/ListMessage";
-import LoadMoreSentinel from "@/components/posts/LoadMoreSentinel";
-import { useCursorList } from "@/components/ui/useCursorList";
+import ListTail from "@/components/ui/ListTail";
+import { useCursorList } from "@/lib/useCursorList";
 import type { CollectionItem } from "@/lib/collections";
 import type { CursorPage } from "@/lib/pagination";
 import CollectionGrid from "./CollectionGrid";
@@ -32,17 +31,16 @@ export default function CollectionList({ fetchPage, canCreate, emptyMessage, use
         />
       )}
 
-      {loading && <ListMessage>Loading…</ListMessage>}
-      {error && (
-        <ListMessage actionLabel="Try again" onAction={retry}>
-          {error}
-        </ListMessage>
-      )}
-      {!loading && !error && items.length === 0 && !canCreate && (
-        <ListMessage>{emptyMessage}</ListMessage>
-      )}
-
-      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} />}
+      <ListTail
+        loading={loading}
+        error={error}
+        retry={retry}
+        showEmpty={items.length === 0 && !canCreate}
+        emptyMessage={emptyMessage}
+        hasMore={hasMore}
+        loadMore={loadMore}
+        rootMargin="600px"
+      />
 
       {creating && <CreateCollectionModal onClose={() => setCreating(false)} onCreated={add} />}
     </>

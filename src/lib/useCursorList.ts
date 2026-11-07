@@ -4,50 +4,118 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getErrorMessage } from "@/lib/errors";
 import type { CursorPage } from "@/lib/pagination";
 
-/** Loads the first page on mount. Remount (change `key`) to reset. */
+type State<T> = {
+  items: T[];
+  nextCursor: string | null;
+  initialized: boolean;
+  loading: boolean;
+  error: string | null;
+};
+
+const initial = <T,>(): State<T> => ({
+  items: [],
+  nextCursor: null,
+  initialized: false,
+  loading: true,
+  error: null,
+});
+
+/**
+ * Cursor-paginated list. `fetchPage` must be referentially stable
+ * (module-level function or useCallback); passing a new one, or remounting
+ * via `key`, starts a fresh list.
+ */
 export function useCursorList<T extends { id: string }>(
-  load: (cursor: string | null) => Promise<CursorPage<T>>
+  fetchPage: (cursor: string | null) => Promise<CursorPage<T>>
 ) {
-  const [items, setItems] = useState<T[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const cursor = useRef<string | null>(null);
-  const busy = useRef(false);
-  const started = useRef(false);
-  const loadRef = useRef(load);
+  const [state, setState] = useState<State<T>>(initial);
+  const [attempt, setAttempt] = useState(0);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   useEffect(() => {
-    loadRef.current = load;
-  });
+    let active = true;
+    fetchPage(null)
+      .then(
+        (page) =>
+          active &&
+          setState({
+            items: page.items,
+            nextCursor: page.nextCursor,
+            initialized: true,
+            loading: false,
+            error: null,
+          })
+      )
+      .catch(
+        (err) =>
+          active && setState((s) => ({ ...s, loading: false, error: getErrorMessage(err) }))
+      );
+    return () => {
+      active = false;
+    };
+  }, [fetchPage, attempt]);
 
-  const loadMore = useCallback(async () => {
-    if (busy.current) return;
-    busy.current = true;
-    setLoading(true);
-    setError(null);
-    try {
-      const page = await loadRef.current(cursor.current);
-      cursor.current = page.nextCursor;
-      setItems((prev) => {
-        const seen = new Set(prev.map((i) => i.id));
-        return [...prev, ...page.items.filter((i) => !seen.has(i.id))];
-      });
-      setHasMore(page.nextCursor !== null);
-    } catch (err) {
-      setError(getErrorMessage(err));
-      setHasMore(false);
-    } finally {
-      busy.current = false;
-      setLoading(false);
+  const loadPage = useCallback(
+    async (cursor: string) => {
+      setState((s) => ({ ...s, loading: true, error: null }));
+      try {
+        const page = await fetchPage(cursor);
+        setState((s) => {
+          const seen = new Set(s.items.map((i) => i.id));
+          return {
+            items: [...s.items, ...page.items.filter((i) => !seen.has(i.id))],
+            nextCursor: page.nextCursor,
+            initialized: true,
+            loading: false,
+            error: null,
+          };
+        });
+      } catch (err) {
+        setState((s) => ({ ...s, loading: false, error: getErrorMessage(err) }));
+      }
+    },
+    [fetchPage]
+  );
+
+  // State is read through a ref so loadMore's identity stays stable: the
+  // sentinel re-observes whenever it changes, and an errored page must not
+  // auto-retry in a loop — only `retry` clears the error.
+  const loadMore = useCallback(() => {
+    const s = stateRef.current;
+    if (s.loading || s.error || !s.nextCursor) return;
+    void loadPage(s.nextCursor);
+  }, [loadPage]);
+
+  const retry = useCallback(() => {
+    const s = stateRef.current;
+    if (!s.initialized) {
+      setState(initial<T>());
+      setAttempt((a) => a + 1);
+      return;
     }
-  }, []);
+    if (s.nextCursor) void loadPage(s.nextCursor);
+  }, [loadPage]);
 
-  useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-    void loadMore();
-  }, [loadMore]);
+  const add = useCallback(
+    (item: T) =>
+      setState((s) => ({ ...s, items: [item, ...s.items.filter((i) => i.id !== item.id)] })),
+    []
+  );
 
-  return { items, hasMore, loading, error, loadMore };
+  const remove = useCallback(
+    (id: string) => setState((s) => ({ ...s, items: s.items.filter((i) => i.id !== id) })),
+    []
+  );
+
+  return {
+    items: state.items,
+    loading: state.loading,
+    error: state.error,
+    hasMore: state.nextCursor !== null,
+    loadMore,
+    retry,
+    add,
+    remove,
+  };
 }

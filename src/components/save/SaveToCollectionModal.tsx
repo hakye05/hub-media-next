@@ -5,9 +5,9 @@ import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import Modal from "@/components/ui/Modal";
 import StatusText from "@/components/ui/StatusText";
-import CollectionThumb from "../CollectionThumb";
-import { collectionSubtitle } from "../format";
-import CreateCollectionModal from "../create/CreateCollectionModal";
+import CollectionThumb from "../collections/CollectionThumb";
+import { collectionSubtitle } from "../collections/format";
+import CreateCollectionModal from "../collections/create/CreateCollectionModal";
 import PickerRow from "./PickerRow";
 import { SAVED_KEY, useCollectionPicker } from "./useCollectionPicker";
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import ColorDots from "../ui/ColorDots";
-import { useSearchSubmit } from "./useSearchSubmit";
+import { useSearchSubmit } from "../search/useSearchSubmit";
 
 export default function NavSearch() {
   const pathname = usePathname();
@@ -28,7 +28,7 @@ function NavSearchForm({ initialValue }: { initialValue: string }) {
         onChange={(e) => setValue(e.target.value)}
         enterKeyHint="search"
         aria-label="Search"
-        placeholder="Try 'traditional pottery techniques'"
+        placeholder="Search"
         className="min-w-0 flex-1 bg-transparent text-[15px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
       />
 

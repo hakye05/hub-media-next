@@ -4,11 +4,11 @@ import FollowUserRow from "@/components/follow/list/FollowUserRow";
 import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
 import { usersApi } from "@/lib/users";
 import { useCursorList } from "@/lib/useCursorList";
+import { useCallback } from "react";
 
 export default function PeopleResults({ q }: { q: string }) {
-  const { items, hasMore, loading, error, loadMore } = useCursorList((cursor) =>
-    usersApi.search(q, cursor)
-  );
+  const fetchPage = useCallback((cursor: string | null) => usersApi.search(q, cursor), [q]);
+  const { items, hasMore, loading, error, loadMore } = useCursorList(fetchPage);
 
   return (
     <div className="mx-auto -mt-2 max-w-2xl">

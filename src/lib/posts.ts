@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { searchQuery, type CursorPage } from "./pagination";
+import { pageQuery, searchQuery, type CursorPage } from "./pagination";
 import { ProfileSummary } from "./users";
 
 // Mirrors PostResponse on the backend
@@ -28,12 +28,6 @@ export type CreatePostPayload = {
 export type UpdatePostPayload = {
   title?: string;
   description?: string; // empty string clears it
-};
-
-const pageQuery = (cursor?: string | null, size = 20) => {
-  const params = new URLSearchParams({ size: String(size) });
-  if (cursor) params.set("cursor", cursor);
-  return params.toString();
 };
 
 export const postsApi = {

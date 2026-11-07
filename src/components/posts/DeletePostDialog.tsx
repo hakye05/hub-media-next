@@ -1,12 +1,15 @@
 "use client";
 
+import { useCallback } from "react";
+import { postsApi } from "@/lib/posts";
+import { useAsyncAction } from "@/lib/useAsyncAction";
 import ConfirmModal from "../ui/ConfirmModal";
-import { useDeletePost } from "./useDeletePost";
 
 type Props = { postId: string; onDeleted: () => void; onClose: () => void };
 
 export default function DeletePostDialog({ postId, onDeleted, onClose }: Props) {
-  const { busy, error, run } = useDeletePost(postId, onDeleted);
+  const deletePost = useCallback(() => postsApi.delete(postId), [postId]);
+  const { busy, error, run } = useAsyncAction(deletePost, onDeleted);
 
   return (
     <ConfirmModal

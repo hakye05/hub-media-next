@@ -9,22 +9,19 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import AuthModal from "./AuthModal";
 import { refreshSession, setAccessToken, type AuthResponse, type User } from "@/lib/api";
 import { authApi, type RegisterPayload } from "@/lib/authApi";
 import { usersApi } from "@/lib/users";
+import { AuthModalProvider } from "./AuthModalProvider";
 
-export type AuthMode = "login" | "signup";
 export type AuthStatus = "loading" | "authenticated" | "guest";
 
 // The auth response carries no avatarUrl, so it's filled in from /users/me.
 export type SessionUser = User & { avatarUrl: string | null };
 
-type AuthContextValue = {
+type SessionValue = {
   user: SessionUser | null;
   status: AuthStatus;
-  openAuth: (mode: AuthMode) => void;
-  closeAuth: () => void;
   login: (email: string, password: string) => Promise<void>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
@@ -32,16 +29,15 @@ type AuthContextValue = {
   setSession: (r: AuthResponse) => void;
 };
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+const SessionContext = createContext<SessionValue | null>(null);
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
+  const ctx = useContext(SessionContext);
   if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
   return ctx;
 }
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<AuthMode | null>(null);
   const [user, setUser] = useState<SessionUser | null>(null);
   const [status, setStatus] = useState<AuthStatus>("loading");
 
@@ -54,9 +50,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     // the navbar just falls back to initials.
     usersApi
       .getMe()
-      .then((me) =>
-        setUser((u) => (u && u.id === me.id ? { ...u, avatarUrl: me.avatarUrl } : u))
-      )
+      .then((me) => setUser((u) => (u && u.id === me.id ? { ...u, avatarUrl: me.avatarUrl } : u)))
       .catch(() => {});
   }, []);
 
@@ -76,18 +70,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [applySession]);
 
-  const openAuth = useCallback((m: AuthMode) => setMode(m), []);
-  const closeAuth = useCallback(() => setMode(null), []);
-
   const login = useCallback(
-    async (email: string, password: string) =>
-      applySession(await authApi.login(email, password)),
+    async (email: string, password: string) => applySession(await authApi.login(email, password)),
     [applySession]
   );
 
   const register = useCallback(
-    async (payload: RegisterPayload) =>
-      applySession(await authApi.register(payload)),
+    async (payload: RegisterPayload) => applySession(await authApi.register(payload)),
     [applySession]
   );
 
@@ -107,20 +96,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ user, status, openAuth, closeAuth, login, register, logout, updateUser, setSession: applySession }),
-    [user, status, openAuth, closeAuth, login, register, logout, updateUser, applySession]
+    () => ({ user, status, login, register, logout, updateUser, setSession: applySession }),
+    [user, status, login, register, logout, updateUser, applySession]
   );
 
   return (
-    <AuthContext.Provider value={value}>
-      {children}
-      {mode && (
-        <AuthModal
-          mode={mode}
-          onClose={closeAuth}
-          onSwitch={() => setMode(mode === "login" ? "signup" : "login")}
-        />
-      )}
-    </AuthContext.Provider>
+    <SessionContext.Provider value={value}>
+      <AuthModalProvider>{children}</AuthModalProvider>
+    </SessionContext.Provider>
   );
 }

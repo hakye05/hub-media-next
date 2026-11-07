@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { AuthShell } from "./AuthShell";
 import { ChoiceButton, PrimaryButton } from "../ui/Button";
 import { Field } from "../ui/fields/Field";
@@ -8,29 +8,8 @@ import { Heading } from "../ui/Heading";
 import { LogoDots } from "../ui/LogoDots";
 import { PasswordField } from "../ui/fields/PasswordField";
 import { TextLink } from "../ui/TextLink";
-import { useAuth } from "./AuthProvider";
-import { authApi } from "@/lib/authApi";
-import { getErrorMessage } from "@/lib/errors";
 import { GENDER_OPTIONS } from "@/lib/gender";
-
-type Step = "email" | "password" | "name" | "age" | "gender" | "username";
-
-const STEPS: Step[] = ["email", "password", "name", "age", "gender", "username"];
-
-const MIN_AGE = 13;
-const MAX_AGE = 120;
-const USERNAME_RE = /^[a-z0-9_.]{3,20}$/;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const USERNAME_FORMAT_MSG = "Use 3–20 letters, numbers, _ or .";
-
-type Data = {
-  email: string;
-  password: string;
-  name: string;
-  age: string;
-  gender: string;
-  username: string;
-};
+import { useSignUpWizard } from "./useSignUpWizard";
 
 const terms = (
   <p className="text-center text-[12px] leading-relaxed text-neutral-500">
@@ -48,106 +27,18 @@ export default function SignUpFlow({
   onClose: () => void;
   onSwitch: () => void;
 }) {
-  const { register } = useAuth();
-  const [index, setIndex] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [data, setData] = useState<Data>({
-    email: "",
-    password: "",
-    name: "",
-    age: "",
-    gender: "",
-    username: "",
-  });
-
-  const step = STEPS[index];
-  const set = <K extends keyof Data>(key: K, value: Data[K]) => {
-    setData((d) => ({ ...d, [key]: value }));
-    setError(null);
-  };
-
-  const ageNum = Number(data.age);
-  const valid: Record<Step, boolean> = {
-    email: EMAIL_RE.test(data.email.trim()),
-    password: data.password.length >= 8,
-    name: data.name.trim().length > 0,
-    age: data.age !== "" && ageNum >= MIN_AGE && ageNum <= MAX_AGE,
-    gender: data.gender !== "",
-    username: USERNAME_RE.test(data.username),
-  };
-
-  // The username button stays clickable (once something is typed) so an invalid
-  // username can show its red message on click instead of while typing.
-  const canSubmit =
-    !busy && (step === "username" ? data.username !== "" : valid[step]);
-
-  const advance = () => setIndex((i) => i + 1);
-
-  async function submitEmail() {
-    setBusy(true);
-    setError(null);
-    try {
-      const { available } = await authApi.checkEmail(data.email.trim());
-      if (!available) {
-        setError("This email is already registered.");
-        return;
-      }
-      advance();
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function submitUsername() {
-    if (!valid.username) {
-      setError(USERNAME_FORMAT_MSG);
-      return;
-    }
-    setBusy(true);
-    setError(null);
-    try {
-      const { available } = await authApi.checkUsername(data.username);
-      if (!available) {
-        setError("Username is not available");
-        return;
-      }
-      await register({
-        email: data.email.trim(),
-        password: data.password,
-        displayName: data.name.trim(),
-        username: data.username,
-        age: ageNum,
-        gender: data.gender,
-      });
-      onClose();
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (busy) return;
-    if (step === "username") return void submitUsername();
-    if (!valid[step]) return;
-    if (step === "email") return void submitEmail();
-    advance();
-  }
-
-  function chooseGender(value: string) {
-    set("gender", value);
-    advance();
-  }
-
-  function goBack() {
-    setError(null);
-    setIndex((i) => i - 1);
-  }
+  const {
+    index,
+    step,
+    data,
+    set,
+    setUsername,
+    error,
+    canSubmit,
+    handleSubmit,
+    chooseGender,
+    goBack,
+  } = useSignUpWizard(onClose);
 
   /* ----- per-step content ----- */
   let heading: ReactNode;
@@ -185,9 +76,7 @@ export default function SignUpFlow({
       break;
 
     case "password":
-      heading = (
-        <Heading title="Choose a password" subtitle="Use at least 8 characters" />
-      );
+      heading = <Heading title="Choose a password" subtitle="Use at least 8 characters" />;
       body = (
         <PasswordField
           autoFocus
@@ -201,10 +90,7 @@ export default function SignUpFlow({
 
     case "name":
       heading = (
-        <Heading
-          title="Enter your full name"
-          subtitle="This will be shown on your profile"
-        />
+        <Heading title="Enter your full name" subtitle="This will be shown on your profile" />
       );
       body = (
         <Field
@@ -219,9 +105,7 @@ export default function SignUpFlow({
       break;
 
     case "age":
-      heading = (
-        <Heading title="Enter your age" subtitle="It won't be displayed." />
-      );
+      heading = <Heading title="Enter your age" subtitle="It won't be displayed." />;
       body = (
         <Field
           autoFocus
@@ -252,9 +136,7 @@ export default function SignUpFlow({
             error ? (
               <span className="text-red-500">{error}</span>
             ) : (
-              <span className="text-neutral-500">
-                This is how people will find you
-              </span>
+              <span className="text-neutral-500">This is how people will find you</span>
             )
           }
         />
@@ -272,12 +154,7 @@ export default function SignUpFlow({
             spellCheck={false}
             className="pl-11"
             value={data.username}
-            onChange={(e) =>
-              set(
-                "username",
-                e.target.value.toLowerCase().replace(/[^a-z0-9_.]/g, "").slice(0, 20)
-              )
-            }
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
       );

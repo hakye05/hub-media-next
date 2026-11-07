@@ -1,5 +1,5 @@
 import { postsApi } from "@/lib/posts";
-import PostList from "./PostList";
+import PostList from "../posts/PostList";
 
 const fetchFeed = (cursor: string | null) => postsApi.feed(cursor);
 
