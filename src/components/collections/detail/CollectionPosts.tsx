@@ -5,7 +5,7 @@ import PostList from "@/components/posts/PostList";
 import SearchInput from "@/components/ui/SearchInput";
 import { collectionsApi } from "@/lib/collections";
 import type { Post } from "@/lib/posts";
-import { useSavePost } from "../save/savePostContext";
+import { useSavePost } from "@/components/save/savePostContext";
 
 export default function CollectionPosts({ collectionId }: { collectionId: string }) {
   const [query, setQuery] = useState("");

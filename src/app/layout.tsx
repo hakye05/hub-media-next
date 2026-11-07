@@ -4,7 +4,7 @@ import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
 import Navbar from "@/components/navbar/Navbar";
 import CreatedPostsProvider from "@/components/posts/CreatedPostsProvider";
-import SavePostProvider from "@/components/collections/save/SavePostProvider";
+import SavePostProvider from "@/components/save/SavePostProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

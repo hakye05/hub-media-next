@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { savedPostsApi } from "@/lib/savedPosts";
 import { SavePostContext, type SavePostValue } from "./savePostContext";
 import SaveToCollectionModal from "./SaveToCollectionModal";
@@ -11,19 +12,20 @@ type Target = { postId: string; wasSaved: boolean };
 type Removals = { ownerId: string | null; map: Record<string, Set<string>> };
 
 const NONE: Record<string, boolean> = {};
-const NO_REMOVALS: Removals = { ownerId: null, map: {} };   // NEW
-const EMPTY_SET: ReadonlySet<string> = new Set();            // NEW
+const NO_REMOVALS: Removals = { ownerId: null, map: {} };
+const EMPTY_SET: ReadonlySet<string> = new Set();
 
 export default function SavePostProvider({ children }: { children: ReactNode }) {
-  const { user, openAuth } = useAuth();
+  const { user } = useAuth();
+  const { openAuth } = useAuthModal();
   const userId = user?.id ?? null;
   const [overrides, setOverrides] = useState<Overrides>({ ownerId: null, map: NONE });
   const [target, setTarget] = useState<Target | null>(null);
-  const [removals, setRemovals] = useState<Removals>(NO_REMOVALS);   // NEW
+  const [removals, setRemovals] = useState<Removals>(NO_REMOVALS);
 
   // Another account logging in must not inherit the previous user's saved state
   const map = overrides.ownerId === userId ? overrides.map : NONE;
-  const removalMap = removals.ownerId === userId ? removals.map : {};   // NEW — Bug 1 fix
+  const removalMap = removals.ownerId === userId ? removals.map : {};
 
   const patch = useCallback(
     (postId: string, saved: boolean) =>
@@ -34,10 +36,7 @@ export default function SavePostProvider({ children }: { children: ReactNode }) 
     [userId]
   );
 
-  const isSaved = useCallback(
-    (postId: string, fallback: boolean) => map[postId] ?? fallback,
-    [map]
-  );
+  const isSaved = useCallback((postId: string, fallback: boolean) => map[postId] ?? fallback, [map]);
 
   const setSaved = useCallback(
     async (postId: string, saved: boolean) => {
@@ -52,7 +51,6 @@ export default function SavePostProvider({ children }: { children: ReactNode }) 
     [patch]
   );
 
-  // NEW — removal tracking
   const removedFrom = useCallback(
     (collectionId: string) => removalMap[collectionId] ?? EMPTY_SET,
     [removalMap]
@@ -96,8 +94,8 @@ export default function SavePostProvider({ children }: { children: ReactNode }) 
   const closeModal = useCallback(() => setTarget(null), []);
 
   const value = useMemo<SavePostValue>(
-    () => ({ isSaved, setSaved, openSave, removedFrom, setRemoved, clearRemoved }),   // UPDATED
-    [isSaved, setSaved, openSave, removedFrom, setRemoved, clearRemoved]              // UPDATED
+    () => ({ isSaved, setSaved, openSave, removedFrom, setRemoved, clearRemoved }),
+    [isSaved, setSaved, openSave, removedFrom, setRemoved, clearRemoved]
   );
 
   return (

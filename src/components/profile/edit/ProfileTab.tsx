@@ -10,11 +10,13 @@ import { SoftField, SoftTextArea } from "../../ui/fields/Field";
 import { FormGroup } from "../../ui/fields/FormGroup";
 import Pane from "./Pane";
 import AvatarPicker from "./AvatarPicker";
+import { sanitizeUsername, usernameMessage, usernameRegex } from "@/lib/validation";
 
 const NAME_MAX = 50;
 const BIO_MAX = 160;
-const USERNAME_RE = /^[a-z0-9_.]{3,30}$/;
-const USERNAME_MSG = "Use 3–30 letters, numbers, _ or .";
+const USERNAME_MAX = 30;
+const USERNAME_RE = usernameRegex(USERNAME_MAX);
+const USERNAME_MSG = usernameMessage(USERNAME_MAX);
 
 type Props = {
   me: UserMe;
@@ -105,12 +107,7 @@ export default function ProfileTab({ me, onUpdated, onDone }: Props) {
                     className="pl-10"
                     value={username}
                     onChange={(e) => {
-                      setUsername(
-                        e.target.value
-                          .toLowerCase()
-                          .replace(/[^a-z0-9_.]/g, "")
-                          .slice(0, 30)
-                      );
+                      setUsername(sanitizeUsername(e.target.value, USERNAME_MAX));
                       setError(null);
                     }}
                   />

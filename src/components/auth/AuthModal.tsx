@@ -1,6 +1,6 @@
 "use client";
 
-import type { AuthMode } from "./AuthProvider";
+import type { AuthMode } from "./AuthModalProvider";
 import LoginForm from "./LoginForm";
 import SignUpFlow from "./SignUpFlow";
 import Modal from "../ui/Modal";

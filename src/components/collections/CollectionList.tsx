@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import ListMessage from "@/components/posts/ListMessage";
-import LoadMoreSentinel from "@/components/posts/LoadMoreSentinel";
-import { useCursorList } from "@/components/ui/useCursorList";
+import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
+import { useCursorList } from "@/lib/useCursorList";
 import type { CollectionItem } from "@/lib/collections";
 import type { CursorPage } from "@/lib/pagination";
 import CollectionGrid from "./CollectionGrid";
@@ -42,7 +42,7 @@ export default function CollectionList({ fetchPage, canCreate, emptyMessage, use
         <ListMessage>{emptyMessage}</ListMessage>
       )}
 
-      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} />}
+      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} rootMargin="600px" />}
 
       {creating && <CreateCollectionModal onClose={() => setCreating(false)} onCreated={add} />}
     </>

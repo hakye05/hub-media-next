@@ -1,10 +1,10 @@
 "use client";
 
-import { useAuth } from "../auth/AuthProvider";
-import SearchBar from "../navbar/SearchBar";
+import { useAuthModal } from "../auth/AuthModalProvider";
+import SearchBar from "../search/SearchBar";
 
 export default function Hero() {
-  const { openAuth } = useAuth();
+  const { openAuth } = useAuthModal();
 
   return (
     <main className="flex min-h-[calc(100vh-90px)] flex-col items-center justify-center gap-10 px-6 pb-24">

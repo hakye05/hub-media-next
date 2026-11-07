@@ -4,13 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../auth/AuthProvider";
+import { useAuthModal } from "../auth/AuthModalProvider";
 import NavHeader from "./NavHeader";
 import NavSearch from "./NavSearch";
 import NavTextButton from "./NavTextButton";
 import UserNavbar from "./UserNavbar";
 
 export default function Navbar() {
-  const { openAuth, user, status } = useAuth();
+  const { user, status } = useAuth();
+  const { openAuth } = useAuthModal()
   const pathname = usePathname();
 
   if (status === "loading") {

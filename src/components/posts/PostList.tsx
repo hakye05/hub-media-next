@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { useSavePost } from "../collections/save/savePostContext";
+import { useSavePost } from "../save/savePostContext";
 import type { Post } from "@/lib/posts";
 import ListMessage from "./ListMessage";
-import LoadMoreSentinel from "./LoadMoreSentinel";
+import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
 import PostGrid from "./PostGrid";
 import { usePostList, type FetchPage } from "./usePostList";
 
@@ -60,7 +60,7 @@ export default function PostList({
         <ListMessage>{filteredOut ? noMatchMessage : emptyMessage}</ListMessage>
       )}
 
-      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} />}
+      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} rootMargin="600px" />}
     </>
   );
 }

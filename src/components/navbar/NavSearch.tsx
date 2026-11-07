@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import ColorDots from "../ui/ColorDots";
-import { useSearchSubmit } from "./useSearchSubmit";
+import { useSearchSubmit } from "../search/useSearchSubmit";
 
 export default function NavSearch() {
   const pathname = usePathname();
