@@ -48,7 +48,7 @@ export default function Navbar() {
       {onSearch ? (
         <NavSearch />
       ) : (
-        <span className="absolute left-1/2 -translate-x-1/2 text-[22px] font-bold tracking-tight">
+        <span className="absolute left-1/2 hidden -translate-x-1/2 text-[22px] font-bold tracking-tight md:block">
           HAKYE-HUB
         </span>
       )}

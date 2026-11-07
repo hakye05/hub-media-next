@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, type SyntheticEvent } from "react";
-import CloseIcon from "@/components/icons/CloseIcon";
 import { SolidButton } from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatusText from "@/components/ui/StatusText";
 import Toggle from "@/components/ui/Toggle";
 import { collectionsApi, type Collection } from "@/lib/collections";
 import { getErrorMessage } from "@/lib/errors";
+import ModalHeader from "@/components/ui/ModalHeader";
 
 const TITLE_MAX = 100;
 const noop = () => {};
@@ -44,18 +44,13 @@ export default function CreateCollectionModal({ onClose, onCreated }: Props) {
   return (
     <Modal label="New collection" onClose={busy ? noop : onClose} className="max-w-100">
       <form onSubmit={handleSubmit} className="flex flex-col px-7 pb-7 pt-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-[16px] font-semibold text-neutral-400">New collection</h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            disabled={busy}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/60 hover:text-neutral-900"
-          >
-            <CloseIcon />
-          </button>
-        </div>
+        <ModalHeader
+          title="New collection"
+          onClose={onClose}
+          disabled={busy}
+          className=""
+          titleClassName="text-[16px] font-semibold text-neutral-400"
+        />
 
         <div className="flex min-h-40 items-center justify-center py-8">
           <input

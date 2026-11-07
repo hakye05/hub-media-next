@@ -1,6 +1,5 @@
 import type { PostDetail } from "@/lib/posts";
 import PostAuthor from "../PostAuthor";
-import FollowButton from "@/components/follow/FollowButton";
 
 const dateFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
@@ -9,14 +8,7 @@ export default function PostInfo({ post }: { post: PostDetail }) {
 
   return (
     <section className="flex w-full flex-col gap-5">
-      <div className="flex items-center justify-between gap-4">
-        <PostAuthor author={post.author} />
-        <FollowButton
-          key={post.author.id}
-          username={post.author.username}
-          isFollowing={post.author.isFollowing}
-        />
-      </div>
+      <PostAuthor author={post.author} />
 
       <div className="flex flex-col gap-2">
         <h1 className="wrap-break-word text-2xl font-bold tracking-tight">{post.title}</h1>

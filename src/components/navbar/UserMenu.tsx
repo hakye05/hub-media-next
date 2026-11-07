@@ -1,31 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import type { SessionUser } from "../auth/AuthProvider";
 import { useAuth } from "../auth/AuthProvider";
 import Avatar from "../ui/Avatar";
+import ChevronDownIcon from "../icons/ChevronDownIcon";
+import { useDismissable } from "../ui/useDismissable";
 
 export default function UserMenu({ user, onCreate }: { user: SessionUser; onCreate: () => void }) {
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
+  const close = useCallback(() => setOpen(false), []);
+ 
+  useDismissable(ref, open, close);
 
   return (
     <div ref={ref} className="relative flex items-center gap-1">
@@ -52,20 +41,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
         onClick={() => setOpen((o) => !o)}
         className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-black/5 hover:text-neutral-900"
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
-          aria-hidden
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <ChevronDownIcon className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
@@ -91,6 +67,16 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
           </div>
 
           <div className="my-2 h-px bg-neutral-200" />
+
+          {/* Only shown when the navbar's Following tab is hidden (below md) */}
+          <Link
+            href="/following"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="block w-full rounded-2xl px-3 py-3 text-left text-[16px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 md:hidden"
+          >
+            Following
+          </Link>
 
           {/* Only shown when the navbar's Create button is hidden (below md) */}
           <button

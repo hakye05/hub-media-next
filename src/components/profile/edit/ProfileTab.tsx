@@ -154,11 +154,10 @@ export default function ProfileTab({ me, onUpdated, onDone }: Props) {
                     setGender(g.value);
                     setError(null);
                   }}
-                  className={`h-10 rounded-full border px-4 text-[14px] font-medium transition-colors ${
-                    gender === g.value
+                  className={`inline-flex h-10 items-center justify-center rounded-full border px-4 text-[14px] font-medium leading-none transition-colors ${gender === g.value
                       ? "border-[#111] bg-[#111] text-white"
                       : "border-neutral-200 bg-[#faf9f8] text-neutral-800 hover:bg-neutral-100"
-                  }`}
+                    }`}
                 >
                   {g.label}
                 </button>

@@ -3,8 +3,7 @@
 import { useMemo } from "react";
 import { useSavePost } from "../save/savePostContext";
 import type { Post } from "@/lib/posts";
-import ListMessage from "./ListMessage";
-import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
+import ListTail from "@/components/ui/ListTail";
 import PostGrid from "./PostGrid";
 import { usePostList, type FetchPage } from "./usePostList";
 
@@ -50,17 +49,16 @@ export default function PostList({
     <>
       {visible.length > 0 && <PostGrid posts={visible} onDeleted={remove} />}
 
-      {loading && <ListMessage>Loading…</ListMessage>}
-      {error && (
-        <ListMessage actionLabel="Try again" onAction={retry}>
-          {error}
-        </ListMessage>
-      )}
-      {!loading && !error && visible.length === 0 && (
-        <ListMessage>{filteredOut ? noMatchMessage : emptyMessage}</ListMessage>
-      )}
-
-      {hasMore && !loading && !error && <LoadMoreSentinel onVisible={loadMore} rootMargin="600px" />}
+      <ListTail
+        loading={loading}
+        error={error}
+        retry={retry}
+        showEmpty={visible.length === 0}
+        emptyMessage={filteredOut ? noMatchMessage : emptyMessage}
+        hasMore={hasMore}
+        loadMore={loadMore}
+        rootMargin="600px"
+      />
     </>
   );
 }

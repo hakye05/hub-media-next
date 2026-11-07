@@ -4,12 +4,12 @@ import { useState, type SyntheticEvent } from "react";
 import { getErrorMessage } from "@/lib/errors";
 import { POST_DESCRIPTION_MAX, POST_TITLE_MAX } from "@/lib/postLimits";
 import { postsApi, type Post, type PostDetail } from "@/lib/posts";
-import CloseIcon from "@/components/icons/CloseIcon";
 import { SolidButton } from "@/components/ui/Button";
 import { SoftField, SoftTextArea } from "@/components/ui/fields/Field";
 import { FormGroup } from "@/components/ui/fields/FormGroup";
 import Modal from "@/components/ui/Modal";
 import StatusText from "@/components/ui/StatusText";
+import ModalHeader from "@/components/ui/ModalHeader";
 
 type Props = {
   post: PostDetail;
@@ -51,17 +51,7 @@ export default function EditPostModal({ post, onClose, onSaved }: Props) {
   return (
     <Modal label="Edit post" onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex max-h-[90vh] flex-col">
-        <div className="flex items-center justify-between px-8 pb-2 pt-7">
-          <h2 className="text-[22px] font-semibold tracking-tight">Edit post</h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/60 hover:text-neutral-900"
-          >
-            <CloseIcon />
-          </button>
-        </div>
+        <ModalHeader title="Edit post" onClose={onClose} />
 
         <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-8 pb-6 pt-3">
           <FormGroup label="Title" hint={`${title.length}/${POST_TITLE_MAX}`}>

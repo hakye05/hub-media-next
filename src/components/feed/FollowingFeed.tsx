@@ -4,9 +4,8 @@ import { useCallback } from "react";
 import { postsApi } from "@/lib/posts";
 import { useCursorList } from "@/lib/useCursorList";
 import { useRequireAuth } from "@/components/auth/useRequireAuth";
-import ListMessage from "@/components/posts/ListMessage";
-import LoadMoreSentinel from "@/components/ui/LoadMoreSentinel";
 import FeedPostCard from "./FeedPostCard";
+import ListTail from "../ui/ListTail";
 
 function Feed() {
   const fetchPage = useCallback((cursor: string | null) => postsApi.following(cursor), []);
@@ -17,15 +16,15 @@ function Feed() {
       {items.map((p) => (
         <FeedPostCard key={p.id} post={p} />
       ))}
-      {!loading && !error && items.length === 0 && (
-        <ListMessage>Follow people to see their posts here.</ListMessage>
-      )}
-      {error && (
-        <ListMessage actionLabel="Try again" onAction={retry}>
-          {error}
-        </ListMessage>
-      )}
-      <LoadMoreSentinel onVisible={loadMore} disabled={!hasMore || loading} />
+      <ListTail
+        loading={loading}
+        error={error}
+        retry={retry}
+        showEmpty={items.length === 0}
+        emptyMessage="Follow people to see their posts here."
+        hasMore={hasMore}
+        loadMore={loadMore}
+      />
     </div>
   );
 }

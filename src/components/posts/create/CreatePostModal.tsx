@@ -3,7 +3,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { getErrorMessage } from "@/lib/errors";
 import { postsApi } from "@/lib/posts";
-import CloseIcon from "../../icons/CloseIcon";
 import { SolidButton } from "../../ui/Button";
 import { SoftField, SoftTextArea } from "../../ui/fields/Field";
 import { FormGroup } from "../../ui/fields/FormGroup";
@@ -12,6 +11,7 @@ import StatusText from "../../ui/StatusText";
 import { useCreatedPosts } from "../CreatedPostsProvider";
 import { useImageUpload } from "./useImageUpload";
 import ImageDropzone from "@/components/ui/ImageDropzone";
+import ModalHeader from "@/components/ui/ModalHeader";
 
 const TITLE_MAX = 100;
 const DESCRIPTION_MAX = 500;
@@ -54,17 +54,7 @@ export default function CreatePostModal({ onClose }: { onClose: () => void }) {
   return (
     <Modal label="Create post" onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex max-h-[90vh] flex-col">
-        <div className="flex items-center justify-between px-8 pb-2 pt-7">
-          <h2 className="text-[22px] font-semibold tracking-tight">Create post</h2>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-200/60 hover:text-neutral-900"
-          >
-            <CloseIcon />
-          </button>
-        </div>
+        <ModalHeader title="Create post" onClose={onClose} />
 
         <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-8 pb-6 pt-3">
           <FormGroup label="Title" hint={`${title.length}/${TITLE_MAX}`}>
