@@ -9,7 +9,7 @@ import { useProfileFollow } from "./ProfileFollowContext";
 const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
 
 export default function ProfileFollowSection({ profile }: { profile: PublicProfile }) {
-  const { followers } = useProfileFollow();
+  const { followers, following, onFollowingDelta } = useProfileFollow();
   const [open, setOpen] = useState<FollowKind | null>(null);
 
   return (
@@ -20,7 +20,7 @@ export default function ProfileFollowSection({ profile }: { profile: PublicProfi
         </button>
         {" · "}
         <button type="button" onClick={() => setOpen("following")} className="hover:underline">
-          {compact.format(profile.followingCount)} following
+          {compact.format(following)} following
         </button>
       </p>
 
@@ -28,8 +28,9 @@ export default function ProfileFollowSection({ profile }: { profile: PublicProfi
         <FollowListModal
           username={profile.username}
           initial={open}
-          counts={{ followers, following: profile.followingCount }}
+          counts={{ followers, following }}
           onClose={() => setOpen(null)}
+          onFollowingDelta={onFollowingDelta}
         />
       )}
     </>

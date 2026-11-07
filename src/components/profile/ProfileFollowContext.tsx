@@ -5,8 +5,10 @@ import type { PublicProfile } from "@/lib/users";
 
 type Value = {
   followers: number;
+  following: number;
   isFollowing: boolean;
   onFollowChange: (following: boolean) => void;
+  onFollowingDelta: (delta: 1 | -1) => void;
 };
 
 const Ctx = createContext<Value | null>(null);
@@ -19,14 +21,28 @@ export function ProfileFollowProvider({
   children: ReactNode;
 }) {
   const [followers, setFollowers] = useState(profile.followerCount);
+  const [following, setFollowing] = useState(profile.followingCount);
 
   const onFollowChange = useCallback(
-    (following: boolean) => setFollowers((c) => Math.max(0, c + (following ? 1 : -1))),
+    (isFollowing: boolean) => setFollowers((c) => Math.max(0, c + (isFollowing ? 1 : -1))),
+    []
+  );
+
+  const onFollowingDelta = useCallback(
+    (delta: 1 | -1) => setFollowing((c) => Math.max(0, c + delta)),
     []
   );
 
   return (
-    <Ctx.Provider value={{ followers, isFollowing: profile.isFollowing, onFollowChange }}>
+    <Ctx.Provider
+      value={{
+        followers,
+        following,
+        isFollowing: profile.isFollowing,
+        onFollowChange,
+        onFollowingDelta,
+      }}
+    >
       {children}
     </Ctx.Provider>
   );

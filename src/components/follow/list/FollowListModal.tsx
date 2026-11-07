@@ -13,7 +13,7 @@ type Props = {
   initial: FollowKind;
   counts: Record<FollowKind, number>;
   onClose: () => void;
-  onFollowingDelta?: (delta: 1 | -1) => void;
+  onFollowingDelta: (delta: 1 | -1) => void;
 };
 
 const TABS: { kind: FollowKind; label: string }[] = [
@@ -21,25 +21,23 @@ const TABS: { kind: FollowKind; label: string }[] = [
   { kind: "following", label: "Following" },
 ];
 
-export default function FollowListModal({ username, initial, counts, onClose, onFollowingDelta }: Props) {
+export default function FollowListModal({
+  username,
+  initial,
+  counts,
+  onClose,
+  onFollowingDelta,
+}: Props) {
   const { user } = useAuth();
   const [kind, setKind] = useState<FollowKind>(initial);
   const [query, setQuery] = useState("");
-  const [followingDelta, setFollowingDelta] = useState(0);
   const debounced = useDebouncedValue(query.trim());
 
   const isOwn = user?.username === username;
 
   function handleFollowChange(following: boolean) {
-    const delta = following ? 1 : -1;
-    if (onFollowingDelta) onFollowingDelta(delta);
-    else setFollowingDelta((d) => d + delta);
+    onFollowingDelta(following ? 1 : -1);
   }
-
-  const shown: Record<FollowKind, number> = {
-    ...counts,
-    following: counts.following + followingDelta,
-  };
 
   return (
     <Modal onClose={onClose} label="Followers and following" className="max-w-105">
@@ -56,7 +54,7 @@ export default function FollowListModal({ username, initial, counts, onClose, on
                   : "border-transparent text-neutral-400 hover:text-neutral-700"
               }`}
             >
-              {compact.format(shown[t.kind])} {t.label}
+              {compact.format(counts[t.kind])} {t.label}
             </button>
           ))}
         </div>
