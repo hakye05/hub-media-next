@@ -1,12 +1,14 @@
 import ReadonlyRow from "../../../ui/fields/ReadOnlyRow";
 import StatusText, { type Status } from "../../../ui/StatusText";
 import Pane from "../Pane";
+import DeleteAccountRow from "./DeleteAccountRow";
 
 type Props = {
   email: string;
   notice: Status;
   onEditEmail: () => void;
   onEditPassword: () => void;
+  onDelete: () => void;
 };
 
 export default function AccountOverview({
@@ -14,6 +16,7 @@ export default function AccountOverview({
   notice,
   onEditEmail,
   onEditPassword,
+  onDelete,
 }: Props) {
   return (
     <Pane title="Account details">
@@ -27,6 +30,8 @@ export default function AccountOverview({
         </ReadonlyRow>
 
         <StatusText status={notice} />
+
+        <DeleteAccountRow onDelete={onDelete} />
       </div>
     </Pane>
   );

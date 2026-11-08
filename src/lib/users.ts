@@ -51,6 +51,9 @@ export const usersApi = {
 
   getMe: () => api<UserMe>("/api/users/me"),
 
+  deleteAccount: (currentPassword: string) =>
+    api<void>("/api/users/me", json({ currentPassword }, "DELETE")),
+
   updateProfile: (payload: UpdateProfilePayload) =>
     api<UserMe>("/api/users/me", json(payload, "PATCH")),
 

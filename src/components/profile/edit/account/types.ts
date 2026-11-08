@@ -1,1 +1,1 @@
-export type View = "overview" | "email" | "password";
+export type View = "overview" | "email" | "password" | "delete";

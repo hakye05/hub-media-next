@@ -19,6 +19,8 @@ const VARIANTS = {
     "inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-[#111] px-4 pb-px text-[14px] font-semibold leading-none tracking-tight text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50",
   outlineSmall:
     "inline-flex h-12 shrink-0 items-center justify-center rounded-full border border-neutral-300/70 bg-white px-5 pb-px text-[14px] font-semibold leading-none tracking-tight text-neutral-900 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50",
+  danger:
+    "inline-flex h-12 items-center justify-center rounded-full bg-red-600 px-7 text-[15px] font-semibold tracking-tight text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50",
 } as const;
 
 const ICON_SOLID_SIZE = { md: "h-12 w-12", sm: "h-9 w-9" };
@@ -80,4 +82,8 @@ export function SmallSolidButton(props: ButtonHTMLAttributes<HTMLButtonElement>)
 
 export function OutlineSmallButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return <Button variant="outlineSmall" {...props} />;
+}
+
+export function DangerButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return <Button variant="danger" type="submit" {...props} />;
 }

@@ -7,6 +7,7 @@ import { View } from "./account/types";
 import AccountOverview from "./account/AccountOverview";
 import EmailSection from "./account/EmailSection";
 import PasswordSection from "./account/PasswordSection";
+import DeleteAccountSection from "./account/DeleteAccountSection";
 
 type Props = {
   email: string;
@@ -44,6 +45,9 @@ export default function AccountTab({ email, onUpdated }: Props) {
     case "password":
       return <PasswordSection onSaved={handleSaved} onCancel={backToOverview} />;
 
+    case "delete":
+      return <DeleteAccountSection onCancel={backToOverview} />;
+
     default:
       return (
         <AccountOverview
@@ -51,6 +55,7 @@ export default function AccountTab({ email, onUpdated }: Props) {
           notice={notice}
           onEditEmail={() => open("email")}
           onEditPassword={() => open("password")}
+          onDelete={() => open("delete")}
         />
       );
   }
