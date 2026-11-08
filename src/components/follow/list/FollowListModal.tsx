@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { MouseEvent } from "react";
 import FollowList, { type FollowKind } from "./FollowList";
 import Modal from "@/components/ui/Modal";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
@@ -39,6 +40,12 @@ export default function FollowListModal({
     onFollowingDelta(following ? 1 : -1);
   }
 
+  function handleLinkClick(e: MouseEvent<HTMLDivElement>) {
+    const link = (e.target as HTMLElement).closest("a");
+    const plainClick = e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey;
+    if (link && plainClick) onClose();
+  }
+
   return (
     <Modal onClose={onClose} label="Followers and following" className="max-w-105">
       <div className="flex h-[70vh] w-full flex-col">
@@ -68,7 +75,10 @@ export default function FollowListModal({
           />
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-3">
+        <div
+          className="flex-1 overflow-y-auto px-6 py-3"
+          onClickCapture={handleLinkClick}
+        >
           {/* key remounts the list so each tab starts from page one */}
           <FollowList
             key={`${kind}:${debounced}`}

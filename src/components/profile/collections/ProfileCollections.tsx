@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import CollectionList from "@/components/collections/CollectionList";
 import { collectionsApi } from "@/lib/collections";
+import SavedCollections from "@/components/collections/SavedCollections";
 
 export default function ProfileCollections({ username }: { username: string }) {
   const { user } = useAuth();
@@ -15,12 +16,15 @@ export default function ProfileCollections({ username }: { username: string }) {
   );
 
   return (
-    <CollectionList
-      key={`${username}:${user?.id ?? "guest"}`} // refetch when the viewer changes (private ones appear)
-      username={username}
-      fetchPage={fetchPage}
-      canCreate={isOwn}
-      emptyMessage={isOwn ? "You haven't created any collections yet." : "No collections yet."}
-    />
+    <>
+      <CollectionList
+        key={`${username}:${user?.id ?? "guest"}`} // refetch when the viewer changes (private ones appear)
+        username={username}
+        fetchPage={fetchPage}
+        canCreate={isOwn}
+        emptyMessage={isOwn ? "You haven't created any collections yet." : "No collections yet."}
+      />
+      {isOwn && <SavedCollections />}
+    </>
   );
 }

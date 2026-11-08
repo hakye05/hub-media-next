@@ -33,7 +33,7 @@ The API this project is based on is [MediaHub API](https://github.com/hakye05/hu
     - **Profile**: username, display name, gender, bio, avatar
     - **Account**: email and password
 - Banner upload from a pencil button that appears when you hover your own banner
-- Profile tabs: **Posts**, **Collections**, **Saved**
+- Profile tabs: **Posts**, **Collections** (with your **Saved Collections** below, on your own profile), **Saved**
 - Share profile copies the profile link
 
 **Posts**
@@ -48,6 +48,8 @@ The API this project is based on is [MediaHub API](https://github.com/hakye05/hu
 - Collections are created in a modal with a **Make private** toggle
 - Public collections are visible to anyone; private ones respond `404` to everyone but the owner
 - Collection page with a Cosmos-style header, copy link, delete (owner only) and an in-collection search bar
+- Save or unsave other people's public collections from the collection page (the button is hidden for the owner; guests get the login modal)
+
 
 **Social**
 - Follow and unfollow from the profile page and the post page
@@ -68,8 +70,7 @@ The API this project is based on is [MediaHub API](https://github.com/hakye05/hu
 | `/search?q=` | optional | Search users, posts and collections |
 | `/post/[id]` | optional | Post view: author, image, copy link, download, save, edit |
 | `/[username]` | optional | Profile, **Posts** tab |
-| `/[username]/collections` | optional | Profile, **Collections** tab (owner sees private ones too) |
-| `/[username]/saved` | owner | Profile, **Saved** tab (visible only to the owner) |
+| `/[username]/collections` | optional | Profile, **Collections** tab (owner sees private ones too, plus their Saved Collections) || `/[username]/saved` | owner | Profile, **Saved** tab (visible only to the owner) |
 | `/[username]/collection/[id]` | optional | Collection detail and its posts |
 
 The three profile tabs share one layout, `app/[username]/(profile)/layout.tsx`. It renders the banner, avatar and info once, so switching tabs only swaps the content below and doesn't reload the profile header.

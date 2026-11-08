@@ -30,3 +30,16 @@ body {
 }
 
 input, textarea { caret-color: var(--foreground); }
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  select,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="file"],
+  label[for] {
+    cursor: pointer;
+  }
+}

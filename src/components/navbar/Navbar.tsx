@@ -40,7 +40,6 @@ export default function Navbar() {
           <Image src="/icon.svg" alt="Cosmos logo" width={40} height={40} priority />
         </Link>
 
-        <NavTextButton>Explore</NavTextButton>
         <NavTextButton>About</NavTextButton>
       </div>
 
@@ -48,9 +47,12 @@ export default function Navbar() {
       {onSearch ? (
         <NavSearch />
       ) : (
-        <span className="absolute left-1/2 hidden -translate-x-1/2 text-[22px] font-bold tracking-tight md:block">
+        <Link
+          href="/"
+          className="absolute left-1/2 hidden -translate-x-1/2 text-[22px] font-bold tracking-tight md:block"
+        >
           HAKYE-HUB
-        </span>
+        </Link>
       )}
 
       {/* Right: login + signup */}

@@ -68,4 +68,12 @@ export const collectionsApi = {
   /** The caller's collections that contain this post */
   containingPost: (postId: string) =>
     api<CollectionSummary[]>(`/api/posts/${enc(postId)}/collections`),
+
+  save: (id: string) => api<void>(`/api/collections/${enc(id)}/save`, { method: "PUT" }),
+
+  unsave: (id: string) => api<void>(`/api/collections/${enc(id)}/save`, { method: "DELETE" }),
+
+  /** The caller's saved collections (each carries its owner) */
+  saved: (cursor?: string | null, size = 20) =>
+    api<CursorPage<CollectionSearchResult>>(`/api/collections/saved-collections?${pageQuery(cursor, size)}`),
 };

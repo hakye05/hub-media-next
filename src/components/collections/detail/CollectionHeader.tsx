@@ -11,6 +11,7 @@ import CopyLinkButton from "@/components/ui/CopyLinkButton";
 import type { CollectionDetail } from "@/lib/collections";
 import DeleteCollectionDialog from "./DeleteCollectionDialog";
 import LabeledAction from "./LabeledAction";
+import SaveCollectionButton from "./SaveCollectionButton";
 
 type Props = { collection: CollectionDetail; isOwner: boolean };
 
@@ -54,6 +55,14 @@ export default function CollectionHeader({ collection, isOwner }: Props) {
       </Link>
 
       <div className="mt-2 flex items-start justify-center gap-4">
+        {!isOwner && (
+          <SaveCollectionButton
+            key={`${collection.id}:${collection.savedByViewer}`}
+            collectionId={collection.id}
+            initialSaved={collection.savedByViewer}
+          />
+        )}
+        
         <LabeledAction label="Copy link">
           <CopyLinkButton path={`/${author.username}/collection/${collection.id}`} />
         </LabeledAction>
