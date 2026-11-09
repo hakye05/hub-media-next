@@ -18,7 +18,7 @@ export default function ProfileBanner({ bannerUrl, isSelf, onChanged }: Props) {
     <>
       {/* Default gradient until the user uploads their own image */}
       <div
-        className="group relative h-48 w-full bg-linear-to-r from-sky-200 via-fuchsia-200 to-amber-200 bg-cover bg-center sm:h-56"
+        className="group relative h-32 w-full bg-linear-to-r from-sky-200 via-fuchsia-200 to-amber-200 bg-cover bg-center sm:h-56"
         style={bannerUrl ? { backgroundImage: `url("${bannerUrl}")` } : undefined}
       >
         {isSelf && <BannerEditButton onClick={() => setEditing(true)} />}

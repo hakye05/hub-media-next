@@ -17,13 +17,13 @@ export default function PostCardActions({ post, onDeleted }: Props) {
 
   return (
     <>
-      <div className={`absolute right-3 top-3 ${REVEAL}`}>
+      <div className={`absolute right-3 top-3 max-sm:hidden ${REVEAL}`}>
         <SavePostButton variant="text" postId={post.id} saved={post.savedByViewer} />
       </div>
 
       {/* Stays visible while its menu is open */}
       <div
-        className={`absolute bottom-3 right-3 has-aria-expanded:opacity-100 ${REVEAL}`}
+        className={`absolute bottom-3 right-3 max-sm:hidden has-aria-expanded:opacity-100 ${REVEAL}`}
       >
         <PostCardMenu post={post} isAuthor={isAuthor} onDeleted={onDeleted} />
       </div>

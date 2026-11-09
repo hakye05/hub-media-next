@@ -26,10 +26,10 @@ export default function UserNavbar({ user }: { user: SessionUser }) {
   const closeCreate = useCallback(() => setCreating(false), []);
 
   return (
-    <NavHeader className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-6">
+    <NavHeader className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 sm:gap-6">
       <div className="flex items-center gap-6">
         <Link href="/" className="flex items-center">
-          <Image src="/icon.svg" alt="Cosmos logo" width={40} height={40} priority />
+          <Image src="/icon.svg" alt="Cosmos logo" width={40} height={40} priority className="h-9 w-9 sm:h-10 sm:w-10" />
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">
@@ -47,7 +47,7 @@ export default function UserNavbar({ user }: { user: SessionUser }) {
 
       <NavSearch />
 
-      <div className="flex items-center justify-end gap-3">
+      <div className="flex items-center justify-end gap-1 sm:gap-3">
         {/* Below md the Create action lives in the account dropdown */}
         <div className="hidden md:block">
           <CreatePostButton onClick={openCreate} />

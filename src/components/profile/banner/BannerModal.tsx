@@ -7,11 +7,11 @@ import { uploadsApi } from "@/lib/upload";
 import { usersApi } from "@/lib/users";
 import { SolidButton } from "../../ui/Button";
 import ImageDropzone from "../../ui/ImageDropzone";
-import Modal from "../../ui/Modal";
+import Modal from "../../ui/modals/Modal";
 import StatusText from "../../ui/StatusText";
 import BannerCropper from "./BannerCropper";
 import { useBannerEditor } from "./useBannerEditor";
-import ModalHeader from "@/components/ui/ModalHeader";
+import ModalHeader from "@/components/ui/modals/ModalHeader";
 
 type Props = {
   currentUrl: string | null;

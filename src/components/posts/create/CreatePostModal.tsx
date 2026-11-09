@@ -6,12 +6,12 @@ import { postsApi } from "@/lib/posts";
 import { SolidButton } from "../../ui/Button";
 import { SoftField, SoftTextArea } from "../../ui/fields/Field";
 import { FormGroup } from "../../ui/fields/FormGroup";
-import Modal from "../../ui/Modal";
+import Modal from "../../ui/modals/Modal";
 import StatusText from "../../ui/StatusText";
 import { useCreatedPosts } from "../CreatedPostsProvider";
 import { useImageUpload } from "./useImageUpload";
 import ImageDropzone from "@/components/ui/ImageDropzone";
-import ModalHeader from "@/components/ui/ModalHeader";
+import ModalHeader from "@/components/ui/modals/ModalHeader";
 
 const TITLE_MAX = 100;
 const DESCRIPTION_MAX = 500;

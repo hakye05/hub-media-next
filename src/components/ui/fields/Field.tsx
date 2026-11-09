@@ -7,7 +7,7 @@ export function Field({
   return (
     <input
       {...props}
-      className={`h-16 w-full rounded-full border border-neutral-200 bg-white px-6 text-[17px] text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none ${className}`}
+      className={`h-12 sm:h-16 w-full rounded-full border border-neutral-200 bg-white px-5 sm:px-6 text-[16px] sm:text-[17px] text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none ${className}`}
     />
   );
 }

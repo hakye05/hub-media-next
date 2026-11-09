@@ -7,7 +7,7 @@ import { useAuth } from "../../auth/AuthProvider";
 import CloseIcon from "../../icons/CloseIcon";
 import LockIcon from "../../icons/LockIcon";
 import Avatar from "../../ui/Avatar";
-import Modal from "../../ui/Modal";
+import Modal from "../../ui/modals/Modal";
 import AccountTab from "./AccountTab";
 import Centered from "./Centered";
 import EditNavItem from "./EditNavItem";

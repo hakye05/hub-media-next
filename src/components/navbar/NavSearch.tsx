@@ -19,7 +19,7 @@ function NavSearchForm({ initialValue }: { initialValue: string }) {
     <form
       role="search"
       onSubmit={onSubmit}
-      className="flex h-12 w-full items-center gap-3 rounded-full border border-neutral-300/70 bg-white/60 pl-5 pr-4 transition-colors focus-within:bg-white"
+      className="flex h-10 w-full items-center gap-2 rounded-full border border-neutral-300/70 bg-white/60 pl-4 pr-3 sm:h-12 sm:gap-3 sm:pl-5 sm:pr-4 transition-colors focus-within:bg-white"
     >
       <Image src="/search.svg" alt="" width={22} height={22} />
       <input
@@ -34,29 +34,8 @@ function NavSearchForm({ initialValue }: { initialValue: string }) {
 
       <button
         type="button"
-        aria-label="Search by image"
-        className="text-neutral-500 transition-colors hover:text-neutral-900"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-        >
-          <path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      </button>
-
-      <button
-        type="button"
         aria-label="Visual search"
-        className="relative h-6 w-6 shrink-0 transition-transform hover:scale-110"
+        className="relative hidden h-6 w-6 shrink-0 transition-transform hover:scale-110 sm:block"
       >
         <ColorDots dotClassName="h-1 w-1" radius={8} />
       </button>

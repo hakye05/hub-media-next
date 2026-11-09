@@ -3,7 +3,7 @@
 import { useState } from "react";
 import BookmarkIcon from "@/components/icons/BookmarkIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modals/Modal";
 import StatusText from "@/components/ui/StatusText";
 import CollectionThumb from "../collections/CollectionThumb";
 import { collectionSubtitle } from "../collections/format";

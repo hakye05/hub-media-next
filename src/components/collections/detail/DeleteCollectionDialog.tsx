@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { collectionsApi } from "@/lib/collections";
 import { useAsyncAction } from "@/lib/useAsyncAction";
-import ConfirmModal from "@/components/ui/ConfirmModal";
+import ConfirmModal from "@/components/ui/modals/ConfirmModal";
 
 type Props = { collectionId: string; onDeleted: () => void; onClose: () => void };
 

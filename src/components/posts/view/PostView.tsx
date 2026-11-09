@@ -45,19 +45,24 @@ export default function PostView({ id }: { id: string }) {
 
   return (
     <>
-      <main className="mx-auto flex w-full max-w-6xl flex-col items-center px-9 pb-10">
-        <div className="flex w-fit flex-col gap-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-col items-center px-3 pb-6 sm:px-9 sm:pb-10">
+        <div className="flex w-fit max-w-full flex-col gap-5 sm:gap-8">
           <PostImage
             post={post}
             isAuthor={isAuthor}
             onEdit={() => setEditing(true)}
             onDeleted={handleDeleted}
           />
-          <PostInfo post={post} />
+          <PostInfo
+            post={post}
+            isAuthor={isAuthor}
+            onEdit={() => setEditing(true)}
+            onDeleted={handleDeleted}
+          />
         </div>
       </main>
 
-      <section className="w-full border-t border-neutral-200 px-9 pb-16 pt-4 -mt-2">
+      <section className="w-full border-t border-neutral-200 px-3 pb-12 pt-4 -mt-2 sm:px-9 sm:pb-16">
         <h2 className="mb-4 text-lg font-semibold tracking-tight">
           More from {post.author.username}
         </h2>

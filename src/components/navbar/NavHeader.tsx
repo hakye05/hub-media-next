@@ -9,7 +9,7 @@ export default function NavHeader({
 }) {
   return (
     <header className="sticky top-0 z-50 bg-[#f6f5f3]/90 backdrop-blur">
-      <nav className={`h-22.5 px-9 ${className}`}>{children}</nav>
+      <nav className={`h-16 px-3 sm:h-22.5 sm:px-9 ${className}`}>{children}</nav>
     </header>
   );
 }

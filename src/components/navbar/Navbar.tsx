@@ -23,45 +23,47 @@ export default function Navbar() {
     return <UserNavbar user={user} />;
   }
 
-  // On /search the search field takes the middle logo's place, so guests get the same bar users do
-  const onSearch = pathname === "/search";
+  const onLanding = pathname === "/";
 
   return (
     <NavHeader
       className={
-        onSearch
-          ? "grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-6"
-          : "relative flex items-center justify-between"
+        onLanding
+          ? "relative flex items-center justify-between"
+          : "grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 sm:gap-6"
       }
     >
-      {/* Left: logo + about */}
-      <div className="flex items-center gap-6">
-        <Link href="/" className="flex items-center">
-          <Image src="/icon.svg" alt="Cosmos logo" width={40} height={40} priority />
-        </Link>
+      {/* Left: logo */}
+      <Link href="/" className="flex items-center">
+        <Image
+          src="/icon.svg"
+          alt="Cosmos logo"
+          width={40}
+          height={40}
+          priority
+          className="h-9 w-9 sm:h-10 sm:w-10"
+        />
+      </Link>
 
-        <NavTextButton>About</NavTextButton>
-      </div>
-
-      {/* Center: search field on /search, wordmark elsewhere */}
-      {onSearch ? (
-        <NavSearch />
-      ) : (
+      {/* Center: wordmark on the landing page (desktop only), search field elsewhere */}
+      {onLanding ? (
         <Link
           href="/"
           className="absolute left-1/2 hidden -translate-x-1/2 text-[22px] font-bold tracking-tight md:block"
         >
           HAKYE-HUB
         </Link>
+      ) : (
+        <NavSearch />
       )}
 
       {/* Right: login + signup */}
-      <div className="flex items-center gap-7">
+      <div className="flex items-center gap-4 sm:gap-7">
         <NavTextButton onClick={() => openAuth("login")}>Log in</NavTextButton>
         <button
           type="button"
           onClick={() => openAuth("signup")}
-          className="h-12 rounded-full bg-[#111] px-6 text-[15px] tracking-tight font-semibold text-white transition-colors hover:bg-neutral-800"
+          className="h-10 rounded-full bg-[#111] px-4 pb-px text-[14px] sm:h-12 sm:px-6 sm:text-[15px] tracking-tight font-semibold text-white transition-colors hover:bg-neutral-800"
         >
           Sign up
         </button>

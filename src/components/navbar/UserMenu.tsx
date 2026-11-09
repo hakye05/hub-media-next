@@ -27,7 +27,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
         <Avatar
           name={user.displayName}
           src={user.avatarUrl}
-          className="h-11 w-11"
+          className="h-9 w-9 sm:h-11 sm:w-11"
           textClassName="text-[15px]"
         />
       </Link>
@@ -39,7 +39,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-black/5 hover:text-neutral-900"
+        className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-black/5 hover:text-neutral-900 sm:h-9 sm:w-9"
       >
         <ChevronDownIcon className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
@@ -47,7 +47,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-3 w-72 rounded-3xl border border-neutral-200 bg-white p-3 shadow-xl"
+          className="absolute right-0 top-full mt-3 w-64 rounded-3xl sm:w-72 border border-neutral-200 bg-white p-3 shadow-xl"
         >
           <div className="flex items-center gap-3 px-3 py-3">
             <Avatar

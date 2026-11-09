@@ -24,7 +24,7 @@ export default function ProfileContent({
   const closeEditor = useCallback(() => setEditing(false), []);
 
   return (
-    <section className="mx-auto w-full min-w-0 px-9 mt-7">
+    <section className="mx-auto w-full min-w-0 mt-5 px-3 sm:mt-7 sm:px-9">
       <ProfileToolbar
         isSelf={isSelf}
         username={username}

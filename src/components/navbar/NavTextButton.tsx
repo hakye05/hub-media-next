@@ -7,7 +7,7 @@ export default function NavTextButton({ active = false, ...props }: Props) {
     <button
       type="button"
       {...props}
-      className={`text-[15px] tracking-tight font-semibold transition-colors ${
+      className={`pb-px text-[14px] sm:text-[15px] tracking-tight font-semibold transition-colors ${
         active
           ? "text-neutral-900"
           : "text-text-gray hover:text-background-hover"

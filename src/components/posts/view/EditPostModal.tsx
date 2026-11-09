@@ -7,9 +7,9 @@ import { postsApi, type Post, type PostDetail } from "@/lib/posts";
 import { SolidButton } from "@/components/ui/Button";
 import { SoftField, SoftTextArea } from "@/components/ui/fields/Field";
 import { FormGroup } from "@/components/ui/fields/FormGroup";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modals/Modal";
 import StatusText from "@/components/ui/StatusText";
-import ModalHeader from "@/components/ui/ModalHeader";
+import ModalHeader from "@/components/ui/modals/ModalHeader";
 
 type Props = {
   post: PostDetail;

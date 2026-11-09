@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { MouseEvent } from "react";
 import FollowList, { type FollowKind } from "./FollowList";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modals/Modal";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { useAuth } from "@/components/auth/AuthProvider";
 

@@ -7,8 +7,8 @@ export default function Hero() {
   const { openAuth } = useAuthModal();
 
   return (
-    <main className="flex min-h-[calc(100vh-90px)] flex-col items-center justify-center gap-10 px-6 pb-24">
-      <h1 className="text-center text-6xl font-bold leading-[1.1] tracking-tighter sm:text-7xl">
+    <main className="flex min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-90px)] flex-col items-center justify-center gap-6 px-4 pb-16 sm:gap-10 sm:px-6 sm:pb-24">
+      <h1 className="text-center text-[32px] font-bold leading-[1.1] tracking-tighter sm:text-6xl md:text-7xl">
         <span className="block">Get started with</span>
         <span className="mt-1 inline-flex items-center gap-4">
           your exploration
@@ -25,7 +25,7 @@ export default function Hero() {
       <button
         type="button"
         onClick={() => openAuth("signup")}
-        className="h-14 rounded-full bg-[#111] px-6 text-[15px] font-semibold text-white transition-colors hover:bg-neutral-800"
+        className="h-11 rounded-full bg-[#111] px-5 text-[14px] sm:h-14 sm:px-6 sm:text-[15px] font-semibold text-white transition-colors hover:bg-neutral-800"
       >
         Join HAKYE-HUB for free
       </button>

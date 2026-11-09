@@ -34,7 +34,7 @@ export default function Modal({ label, onClose, className = "max-w-135", childre
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        className={`max-h-[90vh] w-full overflow-hidden rounded-4xl bg-white shadow-2xl ${className}`}
+        className={`max-h-[90dvh] w-full overflow-hidden rounded-4xl bg-white shadow-2xl ${className}`}
       >
         {children}
       </div>

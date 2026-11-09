@@ -2,12 +2,12 @@
 
 import { useState, type SyntheticEvent } from "react";
 import { SolidButton } from "@/components/ui/Button";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modals/Modal";
 import StatusText from "@/components/ui/StatusText";
 import Toggle from "@/components/ui/Toggle";
 import { collectionsApi, type Collection } from "@/lib/collections";
 import { getErrorMessage } from "@/lib/errors";
-import ModalHeader from "@/components/ui/ModalHeader";
+import ModalHeader from "@/components/ui/modals/ModalHeader";
 
 const TITLE_MAX = 100;
 const noop = () => {};

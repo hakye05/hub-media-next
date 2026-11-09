@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { postsApi } from "@/lib/posts";
 import { useAsyncAction } from "@/lib/useAsyncAction";
-import ConfirmModal from "../ui/ConfirmModal";
+import ConfirmModal from "../ui/modals/ConfirmModal";
 
 type Props = { postId: string; onDeleted: () => void; onClose: () => void };
 

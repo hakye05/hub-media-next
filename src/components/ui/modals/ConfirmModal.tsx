@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { createPortal } from "react-dom";
-import { ChoiceButton } from "./Button";
+import { ChoiceButton } from "../Button";
 import Modal from "./Modal";
 
 type Props = {

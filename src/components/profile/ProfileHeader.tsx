@@ -24,17 +24,17 @@ export default function ProfileHeader({ profile, onBannerChanged }: Props) {
         onChanged={onBannerChanged}
       />
 
-      <div className="relative z-10 px-13 sm:px-17">
+      <div className="relative z-10 px-4 sm:px-17">
         <Avatar
           name={profile.displayName}
           src={profile.avatarUrl}
-          className="-mt-14 h-28 w-28 shrink-0 ring-4 ring-[#f6f5f3]"
-          textClassName="text-4xl"
+          className="-mt-10 h-20 w-20 shrink-0 ring-4 ring-[#f6f5f3] sm:-mt-14 sm:h-28 sm:w-28"
+          textClassName="text-3xl sm:text-4xl"
         />
       </div>
 
-      <div className="mt-4 flex max-w-xl flex-col gap-1 px-13 sm:px-17">
-        <h1 className="wrap-break-word text-3xl font-bold tracking-tight">
+      <div className="mt-3 flex max-w-xl flex-col gap-1 px-4 sm:mt-4 sm:px-17">
+        <h1 className="wrap-break-word text-2xl font-bold sm:text-3xl tracking-tight">
           {profile.displayName}
         </h1>
         <p className="text-[15px] text-neutral-500">@{profile.username}</p>

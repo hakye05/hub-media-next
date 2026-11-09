@@ -12,7 +12,7 @@ function Feed() {
   const { items, hasMore, loading, error, loadMore, retry } = useCursorList(fetchPage);
 
   return (
-    <div className="mx-auto flex w-full max-w-124 flex-col gap-6 px-6">
+    <div className="mx-auto flex w-full max-w-124 flex-col gap-4 px-3 sm:gap-6 sm:px-6">
       {items.map((p) => (
         <FeedPostCard key={p.id} post={p} />
       ))}
