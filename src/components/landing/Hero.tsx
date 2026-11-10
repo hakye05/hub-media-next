@@ -20,12 +20,12 @@ export default function Hero() {
         </span>
       </h1>
 
-      <SearchBar />
+      <SearchBar pickerAbove />
 
       <button
         type="button"
         onClick={() => openAuth("signup")}
-        className="h-11 rounded-full bg-[#111] px-5 text-[14px] sm:h-14 sm:px-6 sm:text-[15px] font-semibold text-white transition-colors hover:bg-neutral-800"
+        className="inline-flex h-11 items-center justify-center rounded-full bg-[#111] px-5 pb-px text-[14px] font-semibold leading-none text-white transition-colors hover:bg-neutral-800 sm:h-14 sm:px-6 sm:text-[15px]"
       >
         Join HAKYE-HUB for free
       </button>

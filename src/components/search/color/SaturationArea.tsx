@@ -4,9 +4,13 @@ import { clamp01, hsvToHex, insetPos, THUMB_INSET, type Hsv } from "@/lib/color"
 import ColorThumb from "./ColorThumb";
 import { usePointerDrag } from "./usePointerDrag";
 
-type Props = { hsv: Hsv; onChange: (patch: Partial<Hsv>) => void };
+type Props = {
+  hsv: Hsv;
+  onChange: (patch: Partial<Hsv>) => void;
+  heightClassName?: string;
+};
 
-export default function SaturationArea({ hsv, onChange }: Props) {
+export default function SaturationArea({ hsv, onChange, heightClassName = "h-70" }: Props) {
   const { ref, dragging, handlers } = usePointerDrag(
     (x, y) => onChange({ s: x, v: 1 - y }),
     (dx, dy) => onChange({ s: clamp01(hsv.s + dx), v: clamp01(hsv.v - dy) }),
@@ -25,7 +29,7 @@ export default function SaturationArea({ hsv, onChange }: Props) {
       aria-valuemax={100}
       aria-valuenow={Math.round(hsv.s * 100)}
       aria-valuetext={hex}
-      className="relative h-70 w-full cursor-crosshair touch-none select-none rounded-[20px] outline-none focus-visible:ring-2 shadow-xl focus-visible:ring-neutral-900/40"
+      className={`relative ${heightClassName} w-full cursor-crosshair touch-none select-none rounded-[20px] outline-none focus-visible:ring-2 shadow-xl focus-visible:ring-neutral-900/40`}
       {...handlers}
     >
       <div

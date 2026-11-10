@@ -5,16 +5,17 @@ import { hexToHsv, hsvToHex, isHex, type Hsv } from "@/lib/color";
 import HueSlider from "./HueSlider";
 import SaturationArea from "./SaturationArea";
 
-type Props = { initial: string | null; onAdd: (hex: string) => void };
+type Props = { initial: string | null; onAdd: (hex: string) => void; above?: boolean };
 
 const MOBILE_SIDE_GAP = 12;
 
-export default function ColorPickerPopover({ initial, onAdd }: Props) {
+export default function ColorPickerPopover({ initial, onAdd, above = false }: Props) {
   const [hsv, setHsv] = useState<Hsv>(() => hexToHsv(initial ?? "#000000"));
   const [draft, setDraft] = useState<string | null>(null); // hex text while typing
   const hex = hsvToHex(hsv);
 
   // Mobile: break out of the searchbar's container so the dialog spans the screen (minus side gaps).
+  // Skipped when opening above, where the popover matches the bar's width instead.
   const ref = useRef<HTMLDivElement>(null);
   const [mobileLeft, setMobileLeft] = useState<number | null>(null);
 
@@ -22,7 +23,7 @@ export default function ColorPickerPopover({ initial, onAdd }: Props) {
     const update = () => {
       const host = ref.current?.offsetParent as HTMLElement | null;
       setMobileLeft(
-        host && window.innerWidth < 640
+        host && !above && window.innerWidth < 640
           ? -host.getBoundingClientRect().left + MOBILE_SIDE_GAP
           : null
       );
@@ -30,7 +31,7 @@ export default function ColorPickerPopover({ initial, onAdd }: Props) {
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-  }, []);
+  }, [above]);
 
   function patch(p: Partial<Hsv>) {
     setHsv((c) => ({ ...c, ...p }));
@@ -43,6 +44,10 @@ export default function ColorPickerPopover({ initial, onAdd }: Props) {
     if (isHex(text)) setHsv((c) => hexToHsv(text, c.h));
   }
 
+  const placement = above
+    ? "bottom-full mb-2 inset-x-0 starting:translate-y-1"
+    : "top-full mt-2 starting:-translate-y-1 sm:left-auto sm:right-0 sm:w-96";
+
   return (
     <div
       ref={ref}
@@ -52,9 +57,9 @@ export default function ColorPickerPopover({ initial, onAdd }: Props) {
         left: mobileLeft ?? undefined,
         width: mobileLeft !== null ? `calc(100vw - ${MOBILE_SIDE_GAP * 2}px)` : undefined,
       }}
-      className="absolute top-full z-50 mt-2 rounded-2xl rounded-b-[28px] sm:rounded-[28px] border border-neutral-300/70 bg-[#fbfaf8] p-2 shadow-xl transition duration-150 starting:-translate-y-1 starting:opacity-0 motion-reduce:transition-none sm:left-auto sm:right-0 sm:w-96"
+      className={`absolute z-50 rounded-2xl rounded-b-[28px] sm:rounded-[28px] border border-neutral-300/70 bg-[#fbfaf8] p-2 shadow-xl transition duration-150 starting:opacity-0 motion-reduce:transition-none ${placement}`}
     >
-      <SaturationArea hsv={hsv} onChange={patch} />
+      <SaturationArea hsv={hsv} onChange={patch} heightClassName={above ? "h-52" : "h-70"} />
 
       <div className="mt-2">
         <HueSlider hue={hsv.h} onChange={(h) => patch({ h })} />

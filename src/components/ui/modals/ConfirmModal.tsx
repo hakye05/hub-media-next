@@ -45,7 +45,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={busy}
-            className="h-16 flex-1 rounded-full bg-neutral-100 text-[15px] font-semibold text-red-600 transition-colors hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-12 flex-1 rounded-full bg-neutral-100 text-[15px] font-semibold text-red-600 transition-colors hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 sm:h-16"
           >
             {busy ? busyLabel : confirmLabel}
           </button>

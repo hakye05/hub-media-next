@@ -7,9 +7,9 @@ import ColorTrigger from "./color/ColorTrigger";
 import { useColorPopover } from "./color/useColorPopover";
 import { useSearchSubmit } from "./useSearchSubmit";
 
-type Props = { initialValue?: string; initialColor?: string | null };
+type Props = { initialValue?: string; initialColor?: string | null; pickerAbove?: boolean };
 
-export default function SearchBar({ initialValue = "", initialColor = null }: Props) {
+export default function SearchBar({ initialValue = "", initialColor = null, pickerAbove = false }: Props) {
   const { value, setValue, color, applyColor, onSubmit } = useSearchSubmit(
     initialValue,
     initialColor
@@ -56,6 +56,7 @@ export default function SearchBar({ initialValue = "", initialColor = null }: Pr
       {picker.open && (
         <ColorPickerPopover
           initial={color}
+          above={pickerAbove}
           onAdd={(hex) => {
             applyColor(hex);
             picker.close();
