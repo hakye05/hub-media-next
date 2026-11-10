@@ -47,20 +47,20 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-3 w-64 rounded-3xl sm:w-72 border border-neutral-200 bg-white p-3 shadow-xl"
+          className="absolute right-0 top-full mt-3 w-56 rounded-xl sm:w-72 border border-neutral-200 bg-white p-3 shadow-xl"
         >
           <div className="flex items-center gap-3 px-3 py-3">
             <Avatar
               name={user.displayName}
               src={user.avatarUrl}
-              className="h-12 w-12 shrink-0"
+              className="h-10 w-10 shrink-0 sm:h-12 sm:w-12"
               textClassName="text-[16px]"
             />
             <div className="min-w-0">
-              <p className="truncate text-[16px] font-semibold text-neutral-900">
+              <p className="truncate text-[14px] font-semibold text-neutral-900 sm:text-[16px]">
                 {user.displayName}
               </p>
-              <p className="truncate text-[14px] text-neutral-500">
+              <p className="truncate text-[12px] text-neutral-500 sm:text-[14px]">
                 @{user.username}
               </p>
             </div>
@@ -73,7 +73,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
             href="/following"
             role="menuitem"
             onClick={() => setOpen(false)}
-            className="block w-full rounded-2xl px-3 py-3 text-left text-[16px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 md:hidden"
+            className="block w-full rounded-lg px-3 py-2.5 text-left text-[14px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 sm:py-3 sm:text-[16px] md:hidden"
           >
             Following
           </Link>
@@ -86,7 +86,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
               setOpen(false);
               onCreate();
             }}
-            className="w-full rounded-2xl px-3 py-3 text-left text-[16px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 md:hidden"
+            className="w-full rounded-lg px-3 py-2.5 text-left text-[14px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 sm:py-3 sm:text-[16px] md:hidden"
           >
             Create
           </button>
@@ -98,7 +98,7 @@ export default function UserMenu({ user, onCreate }: { user: SessionUser; onCrea
               setOpen(false);
               await logout();
             }}
-            className="w-full rounded-2xl px-3 py-3 text-left text-[16px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100"
+            className="w-full rounded-lg px-3 py-2.5 text-left text-[14px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 sm:py-3 sm:text-[16px]"
           >
             Log out
           </button>

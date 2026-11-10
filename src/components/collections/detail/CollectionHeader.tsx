@@ -27,7 +27,7 @@ export default function CollectionHeader({ collection, isOwner }: Props) {
 
   return (
     <header className="flex flex-col items-center gap-4 text-center">
-      <h1 className="max-w-3xl wrap-break-word text-4xl font-bold tracking-tight">
+      <h1 className="max-w-3xl wrap-break-word text-2xl font-bold sm:text-4xl tracking-tight">
         {collection.title}
       </h1>
 

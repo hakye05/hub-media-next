@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { parseColorParam } from "@/lib/color";
 import PeopleResults from "./PeopleResults";
 import PostResults from "./PostResults";
 import SearchTabs, { type SearchType } from "./SearchTabs";
@@ -11,19 +12,25 @@ const TYPES: SearchType[] = ["posts", "people", "collections"];
 export default function SearchView() {
   const params = useSearchParams();
   const q = (params.get("q") ?? "").trim();
-  const type = TYPES.find((t) => t === params.get("type")) ?? "posts";
+  const color = parseColorParam(params.get("color"));
+  const requested = TYPES.find((t) => t === params.get("type")) ?? "posts";
+  const type = q ? requested : "posts"; // people and collections need text
 
   return (
     <main className="w-full flex-1 px-3 pb-5 sm:px-9">
-      {!q ? (
-        <p className="mt-6 text-[15px] text-neutral-500">Type something in the search bar.</p>
+      {!q && !color ? (
+        <p className="mt-6 text-center text-[15px] text-neutral-500">
+          Type something or pick a color in the search bar.
+        </p>
       ) : (
         <>
-          <div className="mb-5 flex justify-center sm:mb-8">
-            <SearchTabs q={q} active={type} />
-          </div>
+          {q && (
+            <div className="mb-5 flex justify-center sm:mb-8">
+              <SearchTabs q={q} color={color} active={type} />
+            </div>
+          )}
           {type === "posts" ? (
-            <PostResults key={q} q={q} />
+            <PostResults key={`${q}|${color ?? ""}`} q={q} color={color} />
           ) : type === "people" ? (
             <PeopleResults key={q} q={q} />
           ) : (

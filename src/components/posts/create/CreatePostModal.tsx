@@ -41,6 +41,7 @@ export default function CreatePostModal({ onClose }: { onClose: () => void }) {
         uploadId: image.uploadId,
         title: title.trim(),
         ...(description.trim() && { description: description.trim() }),
+        ...(image.colors.length > 0 && { colors: image.colors }),
       });
       add(post);
       onClose();

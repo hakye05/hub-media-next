@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getErrorMessage } from "@/lib/errors";
 import { ALLOWED_IMAGE_TYPES, uploadsApi } from "@/lib/upload";
+import { extractImageColors } from "@/lib/extractImageColors";
 
 /** Uploads the picked image right away and exposes its uploadId once it's done. */
 export function useImageUpload() {
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadId, setUploadId] = useState<string | null>(null);
+  const [colors, setColors] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const latest = useRef(0); // ignores results of superseded or cleared uploads
@@ -31,8 +33,16 @@ export function useImageUpload() {
     setPreview(URL.createObjectURL(file));
 
     try {
-      const upload = await uploadsApi.uploadImage("POST", file);
-      if (id === latest.current) setUploadId(upload.uploadId);
+      // A failed color read must never block the post, so it falls back to no colors.
+      const found = extractImageColors(file).catch(() => [] as string[]);
+      const [upload, palette] = await Promise.all([
+        uploadsApi.uploadImage("POST", file),
+        found,
+      ]);
+      if (id === latest.current) {
+        setColors(palette);
+        setUploadId(upload.uploadId);
+      }
     } catch (err) {
       if (id === latest.current) {
         setPreview(null);
@@ -47,9 +57,10 @@ export function useImageUpload() {
     latest.current++;
     setPreview(null);
     setUploadId(null);
+    setColors([]);
     setUploading(false);
     setError(null);
   }, []);
 
-  return { preview, uploadId, uploading, error, pick, clear };
+  return { preview, uploadId, colors, uploading, error, pick, clear };
 }

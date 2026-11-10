@@ -62,7 +62,7 @@ export default function CollectionView({ id }: { id: string }) {
   const isOwner = user?.username === collection.author.username; // only the owner can delete
 
   return (
-    <main className="mx-auto flex w-full flex-col items-center gap-8 px-9 pb-16">
+    <main className="mx-auto flex w-full flex-col items-center gap-6 px-3 pb-12 sm:gap-8 sm:px-9 sm:pb-16">
       <CollectionHeader collection={collection} isOwner={isOwner} />
       <CollectionPosts collectionId={collection.id} />
     </main>

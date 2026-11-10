@@ -11,7 +11,7 @@ type Props = {
 export default function PostImage({ post, isAuthor, onEdit, onDeleted }: Props) {
   return (
     <div className="w-fit">
-      <div className="group relative max-w-full overflow-hidden rounded-2xl bg-neutral-200/60 sm:rounded-3x">
+      <div className="group relative max-w-full overflow-hidden rounded-2xl bg-neutral-200/60 sm:rounded-3xl">
         <img
           src={post.imageUrl}
           alt={post.title}

@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { pageQuery, searchQuery, type CursorPage } from "./pagination";
+import { pageQuery, type CursorPage } from "./pagination";
 import { ProfileSummary } from "./users";
 
 // Mirrors PostResponse on the backend
@@ -23,12 +23,15 @@ export type CreatePostPayload = {
   uploadId: string;
   title: string;
   description?: string;
+  colors?: string[];
 };
 
 export type UpdatePostPayload = {
   title?: string;
   description?: string; // empty string clears it
 };
+
+export type PostSearch = { q?: string; color?: string | null };
 
 export const postsApi = {
   create: (payload: CreatePostPayload) =>
@@ -53,6 +56,10 @@ export const postsApi = {
   following: (cursor?: string | null, size = 20) =>
     api<CursorPage<PostDetail>>(`/api/posts/following?${pageQuery(cursor, size)}`),
 
-  search: (q: string, cursor?: string | null, size = 20) =>
-    api<CursorPage<Post>>(`/api/posts/search?${searchQuery(q, cursor, size)}`),
+  search: ({ q, color }: PostSearch, cursor?: string | null, size = 20) => {
+    const params = new URLSearchParams(pageQuery(cursor, size));
+    if (q) params.set("q", q);
+    if (color) params.set("color", color.replace("#", ""));
+    return api<CursorPage<Post>>(`/api/posts/search?${params}`);
+  },
 };

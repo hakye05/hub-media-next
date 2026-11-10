@@ -8,7 +8,9 @@ const TABS: { type: SearchType; label: string }[] = [
   { type: "collections", label: "Collections" },
 ];
 
-export default function SearchTabs({ q, active }: { q: string; active: SearchType }) {
+type Props = { q: string; color: string | null; active: SearchType };
+
+export default function SearchTabs({ q, color, active }: Props) {
   return (
     <nav
       aria-label="Search sections"
