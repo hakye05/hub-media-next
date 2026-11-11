@@ -14,8 +14,6 @@ export default function PostResults({ q, color }: Props) {
   const label = [q && `“${q}”`, color].filter(Boolean).join(" in ");
 
   return (
-    <div className="-mt-2">
-      <PostList fetchPage={fetchPage} emptyMessage={`No posts found for ${label}.`} />
-    </div>
+    <PostList fetchPage={fetchPage} emptyMessage={`No posts found for ${label}.`} />
   );
 }

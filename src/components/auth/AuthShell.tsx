@@ -15,7 +15,7 @@ export function AuthShell({
   onBack?: () => void;
 }) {
   return (
-    <div className="relative flex h-full flex-col items-center py-10 px-10">
+    <div className="relative flex min-h-full flex-col items-center py-10 px-10">
       {onBack && (
         <button
           type="button"
@@ -41,7 +41,7 @@ export function AuthShell({
       <div className="flex h-10 shrink-0 items-center">{logo}</div>
 
       {/* Middle: main block is centered; `below` hangs under it without moving it */}
-      <div className="grid min-h-0 w-full flex-1 grid-rows-[1fr_auto_1fr] pb-5">
+      <div className="grid w-full flex-1 grid-rows-[1fr_auto_1fr] pb-5">
         <div />
         <div className="w-full">{children}</div>
         <div className="w-full pt-6">{below}</div>

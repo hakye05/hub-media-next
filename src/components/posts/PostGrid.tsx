@@ -1,16 +1,20 @@
 import type { Post } from "@/lib/posts";
+import MasonryGrid from "@/components/ui/masonry/MasonryGrid";
 import PostCard from "./card/PostCard";
 
 type Props = { posts: Post[]; onDeleted?: (id: string) => void };
 
+const getId = (post: Post) => post.id;
+const getRatio = (post: Post) =>
+  post.width > 0 && post.height > 0 ? post.height / post.width : 1;
+
 export default function PostGrid({ posts, onDeleted }: Props) {
   return (
-    <div className="columns-2 gap-3 sm:columns-3 sm:gap-5 md:columns-4 lg:columns-5">
-      {posts.map((post) => (
-        <div key={post.id} className="mb-3 break-inside-avoid sm:mb-5">
-          <PostCard post={post} onDeleted={onDeleted} />
-        </div>
-      ))}
-    </div>
+    <MasonryGrid
+      items={posts}
+      getId={getId}
+      getRatio={getRatio}
+      renderItem={(post) => <PostCard post={post} onDeleted={onDeleted} />}
+    />
   );
 }

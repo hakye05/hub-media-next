@@ -54,10 +54,10 @@ export default function CreatePostModal({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal label="Create post" onClose={onClose}>
-      <form onSubmit={handleSubmit} className="flex max-h-[90vh] flex-col">
+      <form onSubmit={handleSubmit} className="flex max-h-[90dvh] min-h-0 flex-col">
         <ModalHeader title="Create post" onClose={onClose} />
 
-        <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-8 pb-6 pt-3">
+        <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-4 pb-6 pt-3 sm:px-5">
           <FormGroup label="Title" hint={`${title.length}/${TITLE_MAX}`}>
             <SoftField
               type="text"
@@ -97,7 +97,7 @@ export default function CreatePostModal({ onClose }: { onClose: () => void }) {
           </FormGroup>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-neutral-200 px-8 py-4">
+        <div className="flex shrink-0 flex-col gap-3 border-t border-neutral-200 bg-white px-5 pt-5 pb-5 sm:px-5">
           <StatusText status={error ? { type: "error", text: error } : null} />
           <SolidButton disabled={!canPublish} className="w-full">
             {busy ? "Publishing…" : "Publish"}

@@ -30,7 +30,9 @@ export default function SearchView() {
             </div>
           )}
           {type === "posts" ? (
-            <PostResults key={`${q}|${color ?? ""}`} q={q} color={color} />
+            <div className={q ? "-mt-2" : undefined}>
+              <PostResults key={`${q}|${color ?? ""}`} q={q} color={color} />
+            </div>
           ) : type === "people" ? (
             <PeopleResults key={q} q={q} />
           ) : (

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
@@ -19,6 +19,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Hub | HAKYE",
   description: "",
+};
+
+export const viewport: Viewport = {
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
